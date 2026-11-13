@@ -10,6 +10,8 @@
  * ─────────────────────────────────────────────────────────────
  */
 
+import type { TechKey } from '@/components/tech-logos'
+
 export type Lang = 'es' | 'en'
 
 export const SITE_URL = 'https://davidvalenzuelaportafolio.vercel.app'
@@ -28,6 +30,22 @@ export const shared = {
     github: 'https://github.com/Davidvzlaa',
     linkedin: '', // pega aquí la URL de tu LinkedIn y el ícono aparece solo
   },
+  /** Logos que aparecen en el inicio */
+  heroStack: ['react', 'typescript', 'nodejs', 'python', 'fastapi', 'postgresql', 'supabase', 'docker', 'tailwind', 'figma'] as TechKey[],
+  /** Stack tecnológico por grupo (los nombres de grupo se traducen en es/en.skillGroups) */
+  skillGroups: [
+    { id: 'frontend', techs: ['react', 'typescript', 'javascript', 'html', 'css', 'tailwind', 'shadcn', 'vite'] },
+    { id: 'backend', techs: ['nodejs', 'express', 'python', 'fastapi', 'dotnet', 'postgresql', 'supabase'] },
+    { id: 'cloud', techs: ['docker', 'vercel', 'render', 'git', 'github', 'figma'] },
+    { id: 'ai', techs: ['gemini', 'streamlit', 'arduino', 'espressif', 'cplusplus'] },
+  ] as { id: 'frontend' | 'backend' | 'cloud' | 'ai'; techs: TechKey[] }[],
+  /** Cifras reales (las etiquetas se traducen en es/en.stats) */
+  stats: [
+    { id: 'gpa', value: '9.7' },
+    { id: 'projects', value: '10+' },
+    { id: 'users', value: '40+' },
+    { id: 'award', value: '1.º' },
+  ] as { id: 'gpa' | 'projects' | 'users' | 'award'; value: string }[],
 }
 
 export type ProjectCategory = 'web' | 'ux' | 'desktop' | 'ai' | 'robotics'
@@ -154,6 +172,22 @@ const es = {
   ui: {
     nav: { about: 'Sobre mí', experience: 'Experiencia', projects: 'Proyectos', skills: 'Habilidades', contact: 'Contacto' },
     contactCta: 'Contactar',
+    eyebrows: { about: 'Sobre mí', experience: 'Trayectoria', projects: 'Portafolio', stack: 'Stack tecnológico', contact: 'Trabajemos juntos' },
+    hello: 'Hola, soy',
+    techIWorkWith: 'Tecnologías con las que trabajo',
+    findMe: 'Encuéntrame en',
+    aboutHeading: 'Desarrollo software que resuelve problemas reales.',
+    info: { name: 'Nombre', email: 'Correo', location: 'Ubicación', availability: 'Disponibilidad', gpa: 'Promedio', languages: 'Idiomas' },
+    projectsHeading: 'Trabajo seleccionado',
+    all: 'Todos',
+    stackHeading: 'Tecnologías que domino',
+    contactHeading: '¿Tienes una vacante o un proyecto?',
+    phoneLabel: 'Teléfono y WhatsApp',
+    footerTagline: 'Software full stack, del diseño al despliegue.',
+    quickLinks: 'Navegación',
+    followMe: 'Sígueme',
+    resume: 'Currículum',
+    madeWith: 'Hecho con React, Tailwind CSS y shadcn/ui.',
     viewProjects: 'Ver proyectos',
     downloadCv: 'Descargar CV',
     menuOpen: 'Abrir menú',
@@ -443,6 +477,16 @@ const es = {
         'Prototipo mecatrónico a escala: firmware y circuito de control que sincroniza sensores de estado con relés y actuadores para despachar productos de forma automática.',
     },
   } as Record<string, ProjectText>,
+  servicesEyebrow: 'Qué hago',
+  servicesTitle: 'Cómo puedo aportar a tu equipo',
+  services: [
+    { icon: 'code', title: 'Desarrollo web full stack', text: 'Aplicaciones con React y TypeScript conectadas a APIs en Node.js o FastAPI, del modelo de datos al despliegue.' },
+    { icon: 'design', title: 'Diseño UX/UI', text: 'Prototipos en Figma, flujos de navegación e interfaces claras, accesibles y responsivas.' },
+    { icon: 'database', title: 'Bases de datos y nube', text: 'PostgreSQL y Supabase con seguridad por roles (RLS), servicios en Docker y despliegue en Vercel y Render.' },
+    { icon: 'ai', title: 'IA e IoT', text: 'Asistentes con IA generativa (Gemini) y prototipos con Arduino y ESP32 controlados por Wi-Fi.' },
+  ] as { icon: 'code' | 'design' | 'database' | 'ai'; title: string; text: string }[],
+  stats: { gpa: 'Promedio académico', projects: 'Proyectos realizados', users: 'Usuarios en Juventudes 2030', award: 'Lugar en Innovación UAdeO' },
+  skillGroups: { frontend: 'Frontend', backend: 'Backend y bases de datos', cloud: 'Nube y herramientas', ai: 'IA e IoT' },
   skills: [
     { group: 'Lenguajes', items: ['JavaScript', 'TypeScript', 'Python', 'C#', 'SQL', 'HTML', 'CSS', 'C/C++'] },
     {
@@ -500,6 +544,22 @@ const en: Content = {
   ui: {
     nav: { about: 'About', experience: 'Experience', projects: 'Projects', skills: 'Skills', contact: 'Contact' },
     contactCta: 'Contact',
+    eyebrows: { about: 'About me', experience: 'Track record', projects: 'Portfolio', stack: 'Tech stack', contact: "Let's work together" },
+    hello: "Hi, I'm",
+    techIWorkWith: 'Technologies I work with',
+    findMe: 'Find me on',
+    aboutHeading: 'I build software that solves real problems.',
+    info: { name: 'Name', email: 'Email', location: 'Location', availability: 'Availability', gpa: 'GPA', languages: 'Languages' },
+    projectsHeading: 'Selected work',
+    all: 'All',
+    stackHeading: 'Technologies I master',
+    contactHeading: 'Have a role or a project in mind?',
+    phoneLabel: 'Phone & WhatsApp',
+    footerTagline: 'Full stack software, from design to deployment.',
+    quickLinks: 'Navigation',
+    followMe: 'Follow me',
+    resume: 'Résumé',
+    madeWith: 'Built with React, Tailwind CSS and shadcn/ui.',
     viewProjects: 'View projects',
     downloadCv: 'Download résumé',
     menuOpen: 'Open menu',
@@ -788,6 +848,16 @@ const en: Content = {
         'Scale mechatronic prototype: firmware and control circuit that sync status sensors with relays and actuators to dispense products automatically.',
     },
   },
+  servicesEyebrow: 'What I do',
+  servicesTitle: 'How I can help your team',
+  services: [
+    { icon: 'code', title: 'Full stack web development', text: 'React and TypeScript apps connected to Node.js or FastAPI APIs, from the data model to deployment.' },
+    { icon: 'design', title: 'UX/UI design', text: 'Figma prototypes, navigation flows and clear, accessible, responsive interfaces.' },
+    { icon: 'database', title: 'Databases & cloud', text: 'PostgreSQL and Supabase with role-based security (RLS), Docker services and deployment on Vercel and Render.' },
+    { icon: 'ai', title: 'AI & IoT', text: 'Generative AI assistants (Gemini) and Arduino and ESP32 prototypes controlled over Wi-Fi.' },
+  ],
+  stats: { gpa: 'GPA', projects: 'Projects built', users: 'Users on Juventudes 2030', award: 'Place in Innovation, UAdeO' },
+  skillGroups: { frontend: 'Frontend', backend: 'Backend & databases', cloud: 'Cloud & tools', ai: 'AI & IoT' },
   skills: [
     { group: 'Languages', items: ['JavaScript', 'TypeScript', 'Python', 'C#', 'SQL', 'HTML', 'CSS', 'C/C++'] },
     {

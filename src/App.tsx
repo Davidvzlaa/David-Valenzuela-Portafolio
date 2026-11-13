@@ -10,24 +10,39 @@ import {
 } from 'react'
 import {
   ArrowRight,
+  ArrowUpRight,
+  CalendarCheck,
   Check,
   ChevronLeft,
   ChevronRight,
+  Code,
   Copy,
+  Cpu,
+  Database,
   Download,
   ExternalLink,
+  FolderGit2,
+  GraduationCap,
   ImageOff,
+  Languages,
   Link2,
   Mail,
+  MapPin,
   Menu,
+  Palette,
+  Phone,
+  Trophy,
+  User,
+  Users,
   X,
 } from 'lucide-react'
 
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/icons'
 import { Section } from '@/components/section'
+import { TechLogo, techLogos } from '@/components/tech-logos'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
-import { shared, type Project } from '@/data/portfolio'
+import { shared, type Project, type ProjectCategory } from '@/data/portfolio'
 import { useI18n } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
@@ -43,6 +58,42 @@ function useLinks() {
     whatsapp: (text: string = t.ui.whatsappMessage) =>
       `https://wa.me/${shared.whatsapp}?text=${encodeURIComponent(text)}`,
   }
+}
+
+function useNav() {
+  const { t } = useI18n()
+  return [
+    { href: '#sobre-mi', label: t.ui.nav.about },
+    { href: '#experiencia', label: t.ui.nav.experience },
+    { href: '#proyectos', label: t.ui.nav.projects },
+    { href: '#habilidades', label: t.ui.nav.skills },
+    { href: '#contacto', label: t.ui.nav.contact },
+  ]
+}
+
+/** Cuadro con ícono, usado en servicios, datos y cifras. */
+function IconTile({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <span
+      className={cn(
+        'grid size-11 shrink-0 place-items-center rounded-xl border border-brand/30 bg-brand/10 text-brand [&_svg]:size-5',
+        className,
+      )}
+    >
+      {children}
+    </span>
+  )
+}
+
+function Logo() {
+  return (
+    <a href="#inicio" className="flex items-center gap-2.5 font-display text-lg font-extrabold tracking-tight uppercase">
+      <span className="grid size-9 place-items-center rounded-lg bg-brand text-sm text-brand-foreground">DV</span>
+      <span>
+        <span className="text-brand">David</span> Valenzuela
+      </span>
+    </a>
+  )
 }
 
 /* ───────────────────────── Encabezado ───────────────────────── */
@@ -65,6 +116,7 @@ function LangToggle() {
 function Header() {
   const { t } = useI18n()
   const links = useLinks()
+  const nav = useNav()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -75,14 +127,6 @@ function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const nav = [
-    { href: '#sobre-mi', label: t.ui.nav.about },
-    { href: '#experiencia', label: t.ui.nav.experience },
-    { href: '#proyectos', label: t.ui.nav.projects },
-    { href: '#habilidades', label: t.ui.nav.skills },
-    { href: '#contacto', label: t.ui.nav.contact },
-  ]
-
   return (
     <header
       className={cn(
@@ -91,16 +135,14 @@ function Header() {
       )}
     >
       <div className="wrap flex h-[4.5rem] items-center justify-between gap-6">
-        <a href="#inicio" className="font-display text-lg font-extrabold tracking-tight uppercase">
-          <span className="text-brand">David</span> Valenzuela
-        </a>
+        <Logo />
 
         <nav className="hidden items-center gap-9 lg:flex" aria-label="Principal">
           {nav.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-[0.95rem] text-muted-foreground transition-colors hover:text-foreground"
+              className="text-[0.95rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {item.label}
             </a>
@@ -110,14 +152,9 @@ function Header() {
         <div className="flex items-center gap-1.5">
           <LangToggle />
           <ThemeToggle />
-          <Button asChild variant="outline" className="ml-1 hidden sm:inline-flex">
-            <a href={links.cv} download>
-              <Download /> CV
-            </a>
-          </Button>
-          <Button asChild variant="brand" className="hidden md:inline-flex">
+          <Button asChild variant="brand" className="ml-1 hidden md:inline-flex">
             <a href={links.whatsapp()} target="_blank" rel="noreferrer">
-              <WhatsappIcon className="size-4" /> {t.ui.contactCta}
+              {t.ui.contactCta} <ArrowUpRight />
             </a>
           </Button>
           <Button
@@ -159,107 +196,194 @@ function Header() {
 }
 
 /* ───────────────────────── Inicio ───────────────────────── */
+function CodeCard() {
+  const { lang } = useI18n()
+  const k = lang === 'es'
+    ? { role: 'rol', stack: 'stack', location: 'ubicacion', available: 'disponible', loc: 'Los Mochis, MX', from: 'Enero 2027' }
+    : { role: 'role', stack: 'stack', location: 'location', available: 'available', loc: 'Los Mochis, MX', from: 'January 2027' }
+  return (
+    <div className="glow-box w-[min(100%,20rem)] rounded-2xl text-left font-mono text-[0.8rem] leading-relaxed shadow-2xl shadow-black/40">
+      <div className="flex items-center justify-between border-b px-4 py-2.5 text-xs text-muted-foreground">
+        <span>&lt;/&gt; david.ts</span>
+        <span className="size-2 rounded-full bg-teal" aria-hidden />
+      </div>
+      <pre className="overflow-hidden px-4 py-3 whitespace-pre-wrap">
+        <span className="text-brand">const</span> david = {'{'}
+        {'\n  '}
+        {k.role}: <span className="text-teal">'Full Stack Developer'</span>,{'\n  '}
+        {k.stack}: [<span className="text-teal">'React'</span>, <span className="text-teal">'TypeScript'</span>,
+        {'\n    '}
+        <span className="text-teal">'Node.js'</span>, <span className="text-teal">'FastAPI'</span>],{'\n  '}
+        {k.location}: <span className="text-teal">'{k.loc}'</span>,{'\n  '}
+        {k.available}: <span className="text-teal">'{k.from}'</span>,{'\n'}
+        {'}'}
+      </pre>
+    </div>
+  )
+}
+
 function Hero() {
   const { t } = useI18n()
   const links = useLinks()
-  const f = t.profile.facts
-  const facts = [
-    { label: t.ui.facts.gpa, value: f.gpa },
-    { label: t.ui.facts.degree, value: f.degree },
-    { label: t.ui.facts.available, value: f.available },
-    { label: t.ui.facts.location, value: f.location },
-  ]
 
   return (
     <section id="inicio" className="relative overflow-hidden pt-28 sm:pt-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 right-0 -z-10 h-[680px] w-[70%] opacity-40 blur-3xl"
+        className="pointer-events-none absolute -top-40 right-0 -z-10 h-[720px] w-[75%] opacity-40 blur-3xl"
         style={{ background: 'radial-gradient(closest-side, color-mix(in oklab, var(--brand) 45%, transparent), transparent)' }}
       />
-      <div className="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_60%_60%_at_70%_40%,#000,transparent)]"
+        style={{
+          backgroundImage: 'radial-gradient(color-mix(in oklab, var(--foreground) 35%, transparent) 1px, transparent 1px)',
+          backgroundSize: '22px 22px',
+        }}
+      />
+
+      <div className="wrap grid items-center gap-14 pb-16 lg:grid-cols-12 lg:gap-10 lg:pb-24">
         <div className="lg:col-span-7">
-          <p className="rise text-sm tracking-[0.2em] text-muted-foreground uppercase" style={delay(0)}>
-            {shared.fullName}
+          <p className="rise inline-flex items-center gap-2.5 rounded-full border border-brand/30 bg-brand/10 px-3.5 py-1.5 text-sm font-medium text-brand" style={delay(0)}>
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-teal opacity-60 motion-reduce:hidden" />
+              <span className="relative inline-flex size-2 rounded-full bg-teal" />
+            </span>
+            {t.profile.availability}
           </p>
 
+          <p className="rise mt-7 font-display text-2xl font-bold sm:text-3xl" style={delay(1)}>
+            {t.ui.hello}
+          </p>
           <h1
-            className="rise mt-5 font-display text-[clamp(2.4rem,11vw,7rem)] leading-[0.88] font-black tracking-[-0.03em] uppercase lg:text-[clamp(4rem,6.4vw,9rem)]"
+            className="rise mt-1 font-display text-[clamp(2.4rem,11vw,7rem)] leading-[0.9] font-black tracking-[-0.03em] uppercase lg:text-[clamp(4rem,6.2vw,8.5rem)]"
             style={delay(1)}
           >
-            <span className="block text-brand">David</span>
-            <span className="block">Valenzuela</span>
+            <span className="block">David</span>
+            <span className="block text-brand">Valenzuela</span>
           </h1>
 
-          <p className="rise mt-5 text-lg font-medium text-teal sm:text-xl" style={delay(2)}>
-            {t.profile.tagline}
+          <p
+            className="rise mt-6 font-display text-sm font-bold tracking-[0.2em] text-teal uppercase sm:text-base sm:tracking-[0.35em]"
+            style={delay(2)}
+          >
+            Full Stack Developer &nbsp;|&nbsp; UX/UI
           </p>
 
-          <p className="rise mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl" style={delay(2)}>
+          <p className="rise mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl" style={delay(2)}>
             {t.profile.headline}
           </p>
 
           <div className="rise mt-9 flex flex-wrap items-center gap-3" style={delay(3)}>
             <Button asChild size="lg" variant="brand" className="h-12 px-6 text-base">
-              <a href="#proyectos">{t.ui.viewProjects}</a>
+              <a href="#proyectos">
+                {t.ui.viewProjects} <ArrowRight />
+              </a>
             </Button>
             <Button asChild size="lg" variant="outline" className="h-12 px-6 text-base">
               <a href={links.cv} download>
-                <Download /> {t.ui.downloadCv}
+                {t.ui.downloadCv} <Download />
               </a>
             </Button>
-            <SocialLinks />
           </div>
 
-          <p className="rise mt-8 flex items-center gap-2.5 text-[0.95rem] text-muted-foreground" style={delay(4)}>
-            <span className="relative flex size-2.5">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-teal opacity-60 motion-reduce:hidden" />
-              <span className="relative inline-flex size-2.5 rounded-full bg-teal" />
-            </span>
-            {t.profile.availability}
-          </p>
+          <div className="rise mt-10" style={delay(4)}>
+            <p className="text-sm font-medium tracking-wide text-muted-foreground uppercase">{t.ui.techIWorkWith}</p>
+            <ul className="mt-4 flex flex-wrap gap-2.5">
+              {shared.heroStack.map((k) => (
+                <li
+                  key={k}
+                  title={techLogos[k].name}
+                  className="grid size-12 place-items-center rounded-xl border bg-card/70 transition-colors hover:border-brand/50"
+                >
+                  <TechLogo tech={k} className="size-6" />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <figure className="rise relative lg:col-span-5" style={delay(2)}>
-          <div className="glow-box relative mx-auto aspect-[4/5] w-full max-w-lg overflow-hidden rounded-[1.75rem] lg:max-w-none">
+        <figure className="rise relative mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none" style={delay(2)}>
+          <div className="relative mx-auto aspect-square w-full max-w-[34rem]">
             <div
               aria-hidden
-              className="absolute inset-0"
+              className="absolute inset-[6%] rounded-full"
               style={{
-                background:
-                  'radial-gradient(90% 70% at 50% 30%, color-mix(in oklab, var(--brand) 40%, transparent), transparent 70%)',
+                background: 'radial-gradient(circle at 50% 40%, color-mix(in oklab, var(--brand) 85%, white 0%), color-mix(in oklab, var(--brand) 35%, transparent) 70%)',
               }}
             />
+            <div aria-hidden className="absolute inset-[2%] rounded-full border border-teal/40" />
             <img
               src={`${base}${shared.avatar}`}
               alt={shared.fullName}
               width={567}
               height={597}
               fetchPriority="high"
-              className="absolute bottom-0 left-1/2 w-[88%] -translate-x-1/2 object-contain"
+              className="absolute bottom-0 left-1/2 w-[86%] -translate-x-1/2 object-contain [mask-image:linear-gradient(to_bottom,#000_85%,transparent)]"
             />
           </div>
-          <figcaption className="glow-box relative mx-auto -mt-12 w-[90%] max-w-sm rounded-2xl p-5 shadow-2xl shadow-black/30 lg:absolute lg:bottom-8 lg:-left-10 lg:mt-0">
-            <p className="font-display font-bold">{t.achievement.title}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{t.achievement.detail}</p>
-          </figcaption>
+          <div className="absolute -bottom-4 left-0 hidden sm:block lg:-left-10">
+            <CodeCard />
+          </div>
+          <div className="glow-box absolute top-[8%] right-0 rounded-2xl px-4 py-3 shadow-xl shadow-black/30 lg:-right-2">
+            <p className="font-display text-2xl font-black text-brand">9.7</p>
+            <p className="text-xs text-muted-foreground">{t.stats.gpa}</p>
+          </div>
         </figure>
       </div>
+    </section>
+  )
+}
 
-      <div className="wrap mt-20">
-        <dl className="grid grid-cols-2 border-y lg:grid-cols-4">
-          {facts.map((fact, i) => (
-            <div
-              key={fact.label}
-              className={cn(
-                'py-6 pr-4',
-                i % 2 === 1 && 'border-l pl-5 lg:pl-8',
-                i >= 2 && 'border-t lg:border-t-0',
-                i === 2 && 'lg:border-l lg:pl-8',
-              )}
-            >
-              <dt className="text-sm text-muted-foreground">{fact.label}</dt>
-              <dd className="mt-1 font-display text-lg font-bold sm:text-2xl">{fact.value}</dd>
+/* ───────────────────────── Sobre mí ───────────────────────── */
+function About() {
+  const { t } = useI18n()
+  const links = useLinks()
+  const info = [
+    { icon: <User />, label: t.ui.info.name, value: shared.fullName },
+    { icon: <Mail />, label: t.ui.info.email, value: shared.email, href: `mailto:${shared.email}` },
+    { icon: <MapPin />, label: t.ui.info.location, value: t.profile.location },
+    { icon: <CalendarCheck />, label: t.ui.info.availability, value: t.profile.facts.available },
+    { icon: <GraduationCap />, label: t.ui.info.gpa, value: t.profile.facts.gpa },
+    { icon: <Languages />, label: t.ui.info.languages, value: t.languages.join(' · ') },
+  ]
+
+  return (
+    <section id="sobre-mi" className="border-y bg-card/40 py-20 sm:py-24">
+      <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-6">
+          <p className="font-display text-sm font-bold tracking-[0.18em] text-brand uppercase">{t.ui.eyebrows.about}</p>
+          <h2 className="mt-3 font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] font-extrabold tracking-tight text-balance">
+            {t.ui.aboutHeading}
+          </h2>
+          <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
+            {t.profile.about.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+          <Button asChild variant="outline" size="lg" className="mt-8">
+            <a href={links.cv} download>
+              {t.ui.downloadCv} <Download />
+            </a>
+          </Button>
+        </div>
+
+        <dl className="grid gap-px self-start overflow-hidden rounded-2xl border bg-border sm:grid-cols-2 lg:col-span-6">
+          {info.map((item) => (
+            <div key={item.label} className="flex items-start gap-4 bg-background p-5 sm:p-6">
+              <IconTile>{item.icon}</IconTile>
+              <div className="min-w-0">
+                <dt className="text-sm text-muted-foreground">{item.label}</dt>
+                <dd className="mt-0.5 font-medium break-words">
+                  {item.href ? (
+                    <a href={item.href} className="hover:text-brand">
+                      {item.value}
+                    </a>
+                  ) : (
+                    item.value
+                  )}
+                </dd>
+              </div>
             </div>
           ))}
         </dl>
@@ -268,81 +392,56 @@ function Hero() {
   )
 }
 
-function SocialLinks() {
-  const links = useLinks()
-  const items = [
-    { href: shared.socials.github, label: 'GitHub', Icon: GithubIcon },
-    { href: shared.socials.linkedin, label: 'LinkedIn', Icon: LinkedinIcon },
-    { href: links.whatsapp(), label: 'WhatsApp', Icon: WhatsappIcon },
-  ].filter((l) => l.href)
+/* ───────────────────────── Qué hago ───────────────────────── */
+const serviceIcons = { code: <Code />, design: <Palette />, database: <Database />, ai: <Cpu /> }
 
+function Services() {
+  const { t } = useI18n()
   return (
-    <div className="flex items-center">
-      {items.map(({ href, label, Icon }) => (
-        <Button key={label} asChild variant="ghost" size="icon" className="size-11">
-          <a href={href} target="_blank" rel="noreferrer" aria-label={label}>
-            <Icon className="size-5" />
-          </a>
-        </Button>
-      ))}
-    </div>
+    <Section id="servicios" eyebrow={t.servicesEyebrow} title={t.servicesTitle}>
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {t.services.map((s) => (
+          <article
+            key={s.title}
+            className="group rounded-2xl border bg-card p-7 transition-colors hover:border-brand/50"
+          >
+            <IconTile className="size-12 [&_svg]:size-6">{serviceIcons[s.icon]}</IconTile>
+            <h3 className="mt-6 font-display text-xl font-bold">{s.title}</h3>
+            <p className="mt-3 leading-relaxed text-muted-foreground">{s.text}</p>
+          </article>
+        ))}
+      </div>
+    </Section>
   )
 }
 
-/* ───────────────────────── Sobre mí ───────────────────────── */
-function About() {
+/* ───────────────────────── Cifras ───────────────────────── */
+const statIcons = { gpa: <GraduationCap />, projects: <FolderGit2 />, users: <Users />, award: <Trophy /> }
+
+function Stats() {
   const { t } = useI18n()
-  const links = useLinks()
   return (
-    <Section id="sobre-mi" title={t.ui.aboutTitle}>
-      <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="space-y-5 text-lg leading-relaxed text-muted-foreground sm:text-xl lg:col-span-7">
-          {t.profile.about.map((p, i) => (
-            <p key={i} className={i === 0 ? 'text-foreground' : undefined}>
-              {p}
-            </p>
-          ))}
-        </div>
-        <div className="glow-box rounded-3xl p-8 lg:col-span-5">
-          <h3 className="font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">{t.ui.education}</h3>
-          {t.education.map((e) => (
-            <div key={e.degree} className="mt-4">
-              <p className="font-display text-2xl font-extrabold uppercase">{e.degree}</p>
-              <p className="mt-1">{e.school}</p>
-              <p className="mt-1 text-muted-foreground">{e.period}</p>
-              <p className="mt-3 text-muted-foreground">{e.detail}</p>
+    <section aria-label="Cifras" className="border-y bg-card/40">
+      <dl className="wrap grid grid-cols-2 lg:grid-cols-4">
+        {shared.stats.map((s, i) => (
+          <div
+            key={s.id}
+            className={cn(
+              'flex items-center gap-4 py-8 sm:py-10',
+              i % 2 === 1 && 'border-l pl-5 sm:pl-8',
+              i >= 2 && 'border-t lg:border-t-0',
+              i === 2 && 'lg:border-l lg:pl-8',
+            )}
+          >
+            <IconTile className="hidden size-12 rounded-full sm:grid [&_svg]:size-6">{statIcons[s.id]}</IconTile>
+            <div className="flex flex-col-reverse">
+              <dt className="mt-0.5 text-sm text-muted-foreground">{t.stats[s.id]}</dt>
+              <dd className="font-display text-3xl font-black sm:text-4xl">{s.value}</dd>
             </div>
-          ))}
-          <div className="mt-8 border-t pt-6">
-            <h3 className="font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">{t.ui.directContact}</h3>
-            <ul className="mt-4 space-y-2">
-              <li>
-                <a href={links.whatsapp()} target="_blank" rel="noreferrer" className="hover:text-brand">
-                  {shared.phone}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${shared.email}`} className="break-all hover:text-brand">
-                  {shared.email}
-                </a>
-              </li>
-              <li>
-                <a href={shared.socials.github} target="_blank" rel="noreferrer" className="hover:text-brand">
-                  github.com/Davidvzlaa
-                </a>
-              </li>
-              {shared.socials.linkedin && (
-                <li>
-                  <a href={shared.socials.linkedin} target="_blank" rel="noreferrer" className="hover:text-brand">
-                    LinkedIn
-                  </a>
-                </li>
-              )}
-            </ul>
           </div>
-        </div>
-      </div>
-    </Section>
+        ))}
+      </dl>
+    </section>
   )
 }
 
@@ -350,28 +449,24 @@ function About() {
 function ExperienceSection({ onOpen }: { onOpen: (id: string) => void }) {
   const { t } = useI18n()
   return (
-    <Section id="experiencia" title={t.ui.experienceTitle} intro={t.ui.experienceIntro}>
-      <ol className="border-t">
+    <Section id="experiencia" eyebrow={t.ui.eyebrows.experience} title={t.ui.experienceTitle} intro={t.ui.experienceIntro}>
+      <ol className="relative space-y-6 before:absolute before:top-2 before:bottom-2 before:left-[0.6875rem] before:w-px before:bg-border lg:before:left-[calc(16.666%+0.6875rem)]">
         {t.experience.map((job) => (
-          <li key={job.company} className="grid gap-4 border-b py-10 lg:grid-cols-12 lg:gap-10">
-            <p className="text-muted-foreground lg:col-span-2">{job.period}</p>
-            <div className="lg:col-span-4">
-              <h3 className="font-display text-2xl font-extrabold uppercase sm:text-3xl">{job.company}</h3>
-              <p className="mt-1 text-teal">{job.role}</p>
-              <p className="mt-3 text-muted-foreground">{job.description}</p>
-              <a
-                href={`${HASH_PREFIX}${job.projectId}`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  onOpen(job.projectId)
-                }}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-              >
-                {t.ui.viewCase} <ArrowRight className="size-4" />
-              </a>
-            </div>
-            <div className="lg:col-span-6">
-              <ul className="space-y-3">
+          <li key={job.company} className="relative grid gap-3 pl-10 lg:grid-cols-6 lg:gap-8 lg:pl-0">
+            <p className="pt-5 text-sm font-medium text-muted-foreground lg:col-span-1 lg:text-right">{job.period}</p>
+            <span
+              aria-hidden
+              className="absolute top-6 left-0 grid size-6 place-items-center rounded-full border border-brand/40 bg-background lg:left-[calc(16.666%)]"
+            >
+              <span className="size-2 rounded-full bg-brand" />
+            </span>
+            <article className="rounded-2xl border bg-card p-6 sm:p-7 lg:col-span-5 lg:ml-10">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3 className="font-display text-2xl font-bold">{job.company}</h3>
+                <p className="font-medium text-teal">{job.role}</p>
+              </div>
+              <p className="mt-2 text-muted-foreground">{job.description}</p>
+              <ul className="mt-5 grid gap-3 lg:grid-cols-2">
                 {job.highlights.map((h) => (
                   <li key={h} className="flex gap-3">
                     <Check className="mt-1 size-4 shrink-0 text-brand" aria-hidden />
@@ -379,8 +474,26 @@ function ExperienceSection({ onOpen }: { onOpen: (id: string) => void }) {
                   </li>
                 ))}
               </ul>
-              <p className="mt-5 text-sm text-muted-foreground">{job.tech.join(', ')}</p>
-            </div>
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t pt-5">
+                <ul className="flex flex-wrap gap-2">
+                  {job.tech.map((tech) => (
+                    <li key={tech} className="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={`${HASH_PREFIX}${job.projectId}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onOpen(job.projectId)
+                  }}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+                >
+                  {t.ui.viewCase} <ArrowRight className="size-4" />
+                </a>
+              </div>
+            </article>
           </li>
         ))}
       </ol>
@@ -489,7 +602,7 @@ function ProjectModal({ project, onClose }: { project: Project | null; onClose: 
               <p className="text-sm text-teal">
                 {t.ui.categories[project.category]} | {project.subtitle}
               </p>
-              <h3 id="modal-title" className="font-display text-2xl font-extrabold uppercase sm:text-3xl">
+              <h3 id="modal-title" className="font-display text-2xl font-extrabold sm:text-3xl">
                 {project.title}
               </h3>
             </div>
@@ -663,7 +776,7 @@ function Cover({ project, className }: { project: Project; className?: string })
       src={`${base}${project.images[0]}`}
       alt=""
       loading="lazy"
-      className={cn('w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]', className)}
+      className={cn('w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]', className)}
     />
   ) : (
     <div
@@ -674,7 +787,7 @@ function Cover({ project, className }: { project: Project; className?: string })
       }}
     >
       <div className="px-6 text-center">
-        <p className="font-display text-[clamp(1.4rem,2.6vw,2.4rem)] leading-none font-black text-foreground/80 uppercase">
+        <p className="font-display text-[clamp(1.25rem,2.2vw,2rem)] leading-tight font-black text-foreground/80">
           {project.title}
         </p>
         <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-muted-foreground">
@@ -685,132 +798,151 @@ function Cover({ project, className }: { project: Project; className?: string })
   )
 }
 
+function ProjectCard({ p, onOpen }: { p: Project; onOpen: (id: string) => void }) {
+  const { t } = useI18n()
+  const openFromLink = (e: MouseEvent) => {
+    e.preventDefault()
+    onOpen(p.id)
+  }
+  return (
+    <article className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-all hover:-translate-y-1 hover:border-brand/50 hover:shadow-xl hover:shadow-black/20">
+      <a href={`${HASH_PREFIX}${p.id}`} onClick={openFromLink} className="block overflow-hidden" tabIndex={-1} aria-hidden>
+        <Cover project={p} className="aspect-[16/10]" />
+      </a>
+      <div className="flex flex-1 flex-col p-6">
+        <p className="text-sm font-medium text-teal">{t.ui.categories[p.category]}</p>
+        <h3 className="mt-1 font-display text-xl font-bold">
+          <a href={`${HASH_PREFIX}${p.id}`} onClick={openFromLink} className="hover:text-brand">
+            {p.title}
+          </a>
+        </h3>
+        <p className="mt-1 text-sm text-muted-foreground">{p.subtitle}</p>
+        <p className="mt-3 line-clamp-3 text-[0.95rem] leading-relaxed text-muted-foreground">{p.summary}</p>
+        <p className="mt-4 text-sm text-brand/90">{p.tech.slice(0, 4).join(' / ')}</p>
+        <div className="mt-auto flex items-center justify-between gap-3 pt-6">
+          <a
+            href={`${HASH_PREFIX}${p.id}`}
+            onClick={openFromLink}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-brand"
+          >
+            {t.ui.viewDetails} <ArrowRight className="size-4" />
+          </a>
+          {(p.demo || p.prototype) && (
+            <Button asChild variant="outline" size="icon" className="size-9">
+              <a href={p.demo ?? p.prototype} target="_blank" rel="noreferrer" aria-label={`${t.ui.openSite}: ${p.title}`}>
+                <ExternalLink />
+              </a>
+            </Button>
+          )}
+        </div>
+      </div>
+    </article>
+  )
+}
+
 function ProjectsSection({ onOpen }: { onOpen: (id: string) => void }) {
   const { t, projects } = useI18n()
-  const featured = projects.filter((p) => p.featured)
-  const others = projects.filter((p) => !p.featured)
-
-  const openFromLink = (id: string) => (e: MouseEvent) => {
-    e.preventDefault()
-    onOpen(id)
-  }
+  const [filter, setFilter] = useState<'all' | ProjectCategory>('all')
+  const categories = Array.from(new Set(projects.map((p) => p.category)))
+  const visible = projects.filter((p) => filter === 'all' || p.category === filter)
 
   return (
-    <Section id="proyectos" title={t.ui.projectsTitle} intro={t.ui.projectsIntro}>
-      <div className="space-y-20 lg:space-y-28">
-        {featured.map((p, i) => (
-          <article key={p.id} className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-            <a
-              href={`${HASH_PREFIX}${p.id}`}
-              onClick={openFromLink(p.id)}
-              aria-label={`${t.ui.viewDetails}: ${p.title}`}
-              className={cn(
-                'group glow-box relative block overflow-hidden rounded-2xl p-1.5 lg:col-span-7',
-                i % 2 === 1 && 'lg:order-2',
-              )}
+    <Section
+      id="proyectos"
+      eyebrow={t.ui.eyebrows.projects}
+      title={t.ui.projectsHeading}
+      intro={t.ui.projectsIntro}
+      action={
+        <div className="flex flex-wrap gap-2" role="group" aria-label={t.ui.projectsTitle}>
+          {(['all', ...categories] as const).map((c) => (
+            <Button
+              key={c}
+              size="sm"
+              variant={filter === c ? 'brand' : 'outline'}
+              className="rounded-full"
+              aria-pressed={filter === c}
+              onClick={() => setFilter(c)}
             >
-              <Cover project={p} className="aspect-[16/9] rounded-xl" />
-              {p.images.length > 0 && (
-                <span className="absolute right-5 bottom-5 rounded-full bg-background/85 px-4 py-2 text-sm font-medium backdrop-blur">
-                  {t.ui.images(p.images.length)}
-                </span>
-              )}
-            </a>
-            <div className={cn('lg:col-span-5', i % 2 === 1 && 'lg:order-1')}>
-              <p className="font-medium text-teal">{p.subtitle}</p>
-              <h3 className="mt-2 font-display text-4xl font-extrabold uppercase sm:text-5xl">{p.title}</h3>
-              <p className="mt-5 line-clamp-4 text-lg leading-relaxed text-muted-foreground">{p.summary}</p>
-              <TechList items={p.tech.slice(0, 7)} className="mt-6" />
-              <div className="mt-8 flex flex-wrap gap-2">
-                <Button variant="outline" onClick={() => onOpen(p.id)}>
-                  {t.ui.viewDetails}
-                </Button>
-                <ProjectLinks p={p} />
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <h3 className="mt-28 mb-8 font-display text-2xl font-extrabold uppercase sm:text-3xl">{t.ui.moreProjects}</h3>
+              {c === 'all' ? t.ui.all : t.ui.categories[c]}
+            </Button>
+          ))}
+        </div>
+      }
+    >
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {others.map((p) => (
-          <a
-            key={p.id}
-            href={`${HASH_PREFIX}${p.id}`}
-            onClick={openFromLink(p.id)}
-            className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-colors hover:border-brand/60"
-          >
-            <div className="overflow-hidden">
-              <Cover project={p} className="aspect-[16/10]" />
-            </div>
-            <div className="flex flex-1 flex-col p-6">
-              <p className="text-sm text-teal">
-                {t.ui.categories[p.category]} | {p.subtitle}
-              </p>
-              <h4 className="mt-1 font-display text-xl font-extrabold uppercase">{p.title}</h4>
-              <p className="mt-3 line-clamp-3 text-muted-foreground">{p.summary}</p>
-              <p className="mt-auto pt-5 text-sm font-medium text-brand">{t.ui.viewDetails}</p>
-            </div>
-          </a>
+        {visible.map((p) => (
+          <ProjectCard key={p.id} p={p} onOpen={onOpen} />
         ))}
       </div>
     </Section>
   )
 }
 
-/* ───────────────────────── Habilidades ───────────────────────── */
+/* ───────────────────────── Stack y formación ───────────────────────── */
 function SkillsSection() {
   const { t } = useI18n()
   return (
-    <Section id="habilidades" title={t.ui.skillsTitle} intro={t.ui.skillsIntro}>
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        {t.skills.map((s) => (
-          <div key={s.group} className="glow-box rounded-2xl p-6">
-            <h3 className="font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">{s.group}</h3>
-            <ul className="mt-4 space-y-2">
-              {s.items.map((i) => (
-                <li key={i}>{i}</li>
+    <Section id="habilidades" eyebrow={t.ui.eyebrows.stack} title={t.ui.stackHeading} intro={t.ui.skillsIntro}>
+      <div className="grid gap-5 lg:grid-cols-2">
+        {shared.skillGroups.map((g) => (
+          <div key={g.id} className="rounded-2xl border bg-card p-6 sm:p-7">
+            <h3 className="font-display text-lg font-bold">{t.skillGroups[g.id]}</h3>
+            <ul className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-4">
+              {g.techs.map((k) => (
+                <li
+                  key={k}
+                  className="flex flex-col items-center gap-2.5 rounded-xl border bg-background px-2 py-4 text-center transition-colors hover:border-brand/50"
+                >
+                  <TechLogo tech={k} className="size-8" />
+                  <span className="text-xs font-medium sm:text-sm">{techLogos[k].name}</span>
+                </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
 
-      <div className="mt-14 grid gap-10 border-t pt-10 lg:grid-cols-12">
-        <div className="lg:col-span-6">
-          <h3 className="font-display text-lg font-extrabold uppercase">{t.ui.howIWork}</h3>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {t.softSkills.map((s) => (
-              <li key={s} className="rounded-full border px-4 py-1.5">
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="lg:col-span-2">
-          <h3 className="font-display text-lg font-extrabold uppercase">{t.ui.languages}</h3>
-          <ul className="mt-4 space-y-1.5 text-muted-foreground">
-            {t.languages.map((l) => (
-              <li key={l}>{l}</li>
-            ))}
-          </ul>
+      <div className="mt-14 grid gap-10 border-t pt-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <h3 className="flex items-center gap-2 font-display text-lg font-bold">
+            <GraduationCap className="size-5 text-brand" /> {t.ui.education}
+          </h3>
+          {t.education.map((e) => (
+            <div key={e.degree} className="mt-4">
+              <p className="font-semibold">{e.degree}</p>
+              <p className="text-muted-foreground">{e.school}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{e.period}</p>
+              <p className="mt-2 text-sm">{e.detail}</p>
+            </div>
+          ))}
         </div>
         <div className="lg:col-span-4">
-          <h3 className="font-display text-lg font-extrabold uppercase">{t.ui.certifications}</h3>
+          <h3 className="flex items-center gap-2 font-display text-lg font-bold">
+            <Trophy className="size-5 text-brand" /> {t.ui.certifications}
+          </h3>
           <ul className="mt-4 space-y-4">
             {t.certifications.map((c) => (
               <li key={c.name}>
-                {c.url ? (
-                  <a href={c.url} target="_blank" rel="noreferrer" className="font-medium hover:text-brand">
-                    {c.name}
-                  </a>
-                ) : (
-                  <p className="font-medium">{c.name}</p>
-                )}
+                <p className="font-semibold">{c.name}</p>
                 <p className="text-sm text-muted-foreground">
                   {c.issuer}, {c.year}
                 </p>
+              </li>
+            ))}
+            <li>
+              <p className="font-semibold">{t.achievement.title}</p>
+              <p className="text-sm text-muted-foreground">{t.achievement.detail}</p>
+            </li>
+          </ul>
+        </div>
+        <div className="lg:col-span-4">
+          <h3 className="flex items-center gap-2 font-display text-lg font-bold">
+            <Users className="size-5 text-brand" /> {t.ui.howIWork}
+          </h3>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {t.softSkills.map((s) => (
+              <li key={s} className="rounded-full border px-3.5 py-1.5 text-sm">
+                {s}
               </li>
             ))}
           </ul>
@@ -850,25 +982,38 @@ function ContactForm() {
   }
 
   const field =
-    'w-full rounded-lg border bg-background px-3.5 py-2.5 text-base text-foreground placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none'
+    'w-full rounded-lg border bg-background px-3.5 py-3 text-base text-foreground placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none'
 
   return (
     <form onSubmit={sendEmail} className="space-y-4" noValidate>
-      <h3 className="font-display text-lg font-extrabold uppercase">{f.title}</h3>
+      <h3 className="font-display text-xl font-bold">{f.title}</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-sm text-muted-foreground">{f.name}</span>
-          <input className={field} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" required />
+          <span className="sr-only">{f.name}</span>
+          <input
+            className={field}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={f.name}
+            autoComplete="name"
+            required
+          />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-sm text-muted-foreground">{f.company}</span>
-          <input className={field} value={company} onChange={(e) => setCompany(e.target.value)} autoComplete="organization" />
+          <span className="sr-only">{f.company}</span>
+          <input
+            className={field}
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            placeholder={f.company}
+            autoComplete="organization"
+          />
         </label>
       </div>
       <label className="block">
-        <span className="mb-1.5 block text-sm text-muted-foreground">{f.message}</span>
+        <span className="sr-only">{f.message}</span>
         <textarea
-          className={cn(field, 'min-h-32 resize-y')}
+          className={cn(field, 'min-h-36 resize-y')}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={f.messagePlaceholder}
@@ -881,11 +1026,11 @@ function ContactForm() {
         </p>
       )}
       <div className="grid gap-3 sm:grid-cols-2">
-        <Button type="submit" variant="outline" size="lg">
-          <Mail /> {f.sendEmail}
-        </Button>
-        <Button type="button" variant="brand" size="lg" onClick={sendWhatsapp}>
+        <Button type="button" variant="brand" size="lg" className="h-12" onClick={sendWhatsapp}>
           <WhatsappIcon className="size-4" /> {f.sendWhatsapp}
+        </Button>
+        <Button type="submit" variant="outline" size="lg" className="h-12">
+          <Mail /> {f.sendEmail}
         </Button>
       </div>
     </form>
@@ -907,67 +1052,135 @@ function ContactSection() {
     }
   }
 
-  return (
-    <section id="contacto" className="border-t bg-band text-band-foreground">
-      <div className="wrap grid gap-12 py-24 sm:py-32 lg:grid-cols-12">
-        <div className="min-w-0 lg:col-span-5">
-          <h2 className="font-display text-[clamp(2.1rem,9.5vw,5rem)] leading-[0.92] font-black uppercase lg:text-[clamp(3rem,4.4vw,5.75rem)]">
-            <span className="block text-brand">{t.ui.contactTitle[0]}</span>
-            <span className="block">{t.ui.contactTitle[1]}</span>
-          </h2>
-          <p className="mt-6 max-w-md text-lg text-band-foreground/70">{t.ui.contactIntro}</p>
+  const rows = [
+    {
+      icon: <Mail />,
+      label: t.ui.info.email,
+      value: shared.email,
+      href: `mailto:${shared.email}`,
+      extra: (
+        <button onClick={copy} className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />} {copied ? t.ui.copied : t.ui.copy}
+        </button>
+      ),
+    },
+    { icon: <Phone />, label: t.ui.phoneLabel, value: shared.phone, href: links.whatsapp() },
+    { icon: <MapPin />, label: t.ui.info.location, value: t.profile.location },
+  ]
 
-          <div className="mt-10 space-y-4">
-            <Button asChild variant="brand" size="lg" className="h-14 w-full text-base sm:w-auto sm:px-8">
-              <a href={links.whatsapp()} target="_blank" rel="noreferrer">
-                <WhatsappIcon className="size-5" /> {t.ui.whatsappCta}
-              </a>
-            </Button>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-band-foreground/80">
-              <a href={`mailto:${shared.email}`} className="break-all hover:text-brand">
-                {shared.email}
-              </a>
-              <button
-                onClick={copy}
-                className="inline-flex items-center gap-1.5 text-sm text-band-foreground/60 hover:text-band-foreground"
-              >
-                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-                {copied ? t.ui.copied : t.ui.copy}
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button asChild variant="outline">
-                <a href={links.cv} download>
-                  <Download /> {t.ui.downloadCv}
-                </a>
-              </Button>
-              <Button asChild variant="outline">
-                <a href={shared.socials.github} target="_blank" rel="noreferrer">
-                  <GithubIcon className="size-4" /> GitHub
-                </a>
-              </Button>
-              {shared.socials.linkedin && (
-                <Button asChild variant="outline">
-                  <a href={shared.socials.linkedin} target="_blank" rel="noreferrer">
-                    <LinkedinIcon className="size-4" /> LinkedIn
-                  </a>
-                </Button>
-              )}
-            </div>
-          </div>
+  return (
+    <section id="contacto" className="border-t py-20 sm:py-24">
+      <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="min-w-0 lg:col-span-5">
+          <p className="font-display text-sm font-bold tracking-[0.18em] text-brand uppercase">{t.ui.eyebrows.contact}</p>
+          <h2 className="mt-3 font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] font-extrabold tracking-tight text-balance">
+            {t.ui.contactHeading}
+          </h2>
+          <p className="mt-4 max-w-md text-lg text-muted-foreground">{t.ui.contactIntro}</p>
+
+          <ul className="mt-8 space-y-5">
+            {rows.map((r) => (
+              <li key={r.label} className="flex items-center gap-4">
+                <IconTile>{r.icon}</IconTile>
+                <div className="min-w-0">
+                  <p className="text-sm text-muted-foreground">{r.label}</p>
+                  <p className="font-medium break-all">
+                    {r.href ? (
+                      <a href={r.href} target={r.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="hover:text-brand">
+                        {r.value}
+                      </a>
+                    ) : (
+                      r.value
+                    )}
+                    {r.extra}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <Button asChild variant="brand" size="lg" className="mt-9 h-12 px-6 text-base">
+            <a href={links.whatsapp()} target="_blank" rel="noreferrer">
+              <WhatsappIcon className="size-5" /> {t.ui.whatsappCta}
+            </a>
+          </Button>
         </div>
 
-        <div className="glow-box min-w-0 self-start rounded-3xl p-6 text-card-foreground sm:p-8 lg:col-span-7">
+        <div className="glow-box min-w-0 self-start rounded-3xl p-6 sm:p-8 lg:col-span-7">
           <ContactForm />
         </div>
       </div>
-      <div className="wrap flex flex-col gap-2 border-t border-band-foreground/10 py-8 text-sm text-band-foreground/50 sm:flex-row sm:justify-between">
+    </section>
+  )
+}
+
+/* ───────────────────────── Pie ───────────────────────── */
+function Footer() {
+  const { t } = useI18n()
+  const links = useLinks()
+  const nav = useNav()
+  const socials = [
+    { href: shared.socials.github, label: 'GitHub', Icon: GithubIcon },
+    { href: shared.socials.linkedin, label: 'LinkedIn', Icon: LinkedinIcon },
+    { href: links.whatsapp(), label: 'WhatsApp', Icon: WhatsappIcon },
+  ].filter((s) => s.href)
+
+  return (
+    <footer className="border-t bg-band text-band-foreground">
+      <div className="wrap grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <Logo />
+          <p className="mt-4 max-w-sm text-band-foreground/65">{t.ui.footerTagline}</p>
+          <p className="mt-4 inline-flex items-center gap-2 text-sm text-teal">
+            <span className="size-2 rounded-full bg-teal" aria-hidden /> {t.profile.availability}
+          </p>
+        </div>
+        <div className="lg:col-span-2">
+          <h3 className="font-display text-sm font-bold tracking-[0.15em] uppercase">{t.ui.quickLinks}</h3>
+          <ul className="mt-4 space-y-2.5 text-band-foreground/65">
+            {nav.map((n) => (
+              <li key={n.href}>
+                <a href={n.href} className="hover:text-brand">
+                  {n.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="lg:col-span-2">
+          <h3 className="font-display text-sm font-bold tracking-[0.15em] uppercase">{t.ui.followMe}</h3>
+          <ul className="mt-4 flex gap-2">
+            {socials.map(({ href, label, Icon }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="grid size-10 place-items-center rounded-lg border border-band-foreground/15 transition-colors hover:border-brand hover:text-brand"
+                >
+                  <Icon className="size-4" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="lg:col-span-3">
+          <h3 className="font-display text-sm font-bold tracking-[0.15em] uppercase">{t.ui.resume}</h3>
+          <Button asChild variant="brand" className="mt-4">
+            <a href={links.cv} download>
+              {t.ui.downloadCv} <Download />
+            </a>
+          </Button>
+        </div>
+      </div>
+      <div className="wrap flex flex-col gap-2 border-t border-band-foreground/10 py-6 text-sm text-band-foreground/50 sm:flex-row sm:justify-between">
         <p>
           © {new Date().getFullYear()} {shared.fullName}
         </p>
-        <p>{t.profile.location}</p>
+        <p>{t.ui.madeWith}</p>
       </div>
-    </section>
+    </footer>
   )
 }
 
@@ -988,11 +1201,14 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Services />
+        <Stats />
         <ExperienceSection onOpen={open} />
         <ProjectsSection onOpen={open} />
         <SkillsSection />
         <ContactSection />
       </main>
+      <Footer />
       <ProjectModal project={selected} onClose={close} />
     </>
   )

@@ -4,24 +4,28 @@ import { cn } from '@/lib/utils'
 
 type SectionProps = {
   id: string
+  eyebrow: string
   title: string
   intro?: ReactNode
+  action?: ReactNode
   children: ReactNode
   className?: string
 }
 
-/** Sección con título grande en mayúsculas (estilo del portafolio en PDF). */
-export function Section({ id, title, intro, children, className }: SectionProps) {
+/** Sección con etiqueta pequeña, título grande e introducción opcional. */
+export function Section({ id, eyebrow, title, intro, action, children, className }: SectionProps) {
   return (
-    <section id={id} className={cn('py-20 sm:py-28', className)}>
+    <section id={id} className={cn('py-20 sm:py-24', className)}>
       <div className="wrap">
-        <div className="mb-12 grid gap-5 lg:mb-16 lg:grid-cols-12 lg:items-end">
-          <h2 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold text-brand uppercase lg:col-span-7">
-            {title}
-          </h2>
-          {intro && (
-            <p className="max-w-xl text-lg text-muted-foreground lg:col-span-5 lg:justify-self-end">{intro}</p>
-          )}
+        <div className="mb-12 flex flex-col gap-6 lg:mb-14 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="font-display text-sm font-bold tracking-[0.18em] text-brand uppercase">{eyebrow}</p>
+            <h2 className="mt-3 font-display text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.05] font-extrabold tracking-tight text-balance">
+              {title}
+            </h2>
+            {intro && <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{intro}</p>}
+          </div>
+          {action}
         </div>
         {children}
       </div>
