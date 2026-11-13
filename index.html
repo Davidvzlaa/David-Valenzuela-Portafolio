@@ -2,14 +2,64 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jesús David Valenzuela — Ingeniero de Software</title>
-    <meta name="description" content="Portafolio y CV de Jesús David Valenzuela Arredondo, estudiante de Ingeniería de Software: desarrollo full stack, frontend, UX/UI y robótica." />
-    <meta property="og:title" content="Jesús David Valenzuela — Portafolio" />
-    <meta property="og:description" content="Desarrollo full stack, frontend, UX/UI y robótica. Proyectos y CV." />
-    <meta property="og:type" content="website" />
+    <meta
+      name="description"
+      content="Portafolio y CV de Jesús David Valenzuela Arredondo, estudiante de Ingeniería de Software: desarrollo full stack, frontend, UX/UI y robótica."
+    />
+    <meta name="author" content="Jesús David Valenzuela Arredondo" />
     <meta name="theme-color" content="#04060a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://davidvalenzuelaportafolio.vercel.app/" />
+    <link rel="alternate" hreflang="es" href="https://davidvalenzuelaportafolio.vercel.app/?lang=es" />
+    <link rel="alternate" hreflang="en" href="https://davidvalenzuelaportafolio.vercel.app/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://davidvalenzuelaportafolio.vercel.app/" />
+
+    <!-- Vista previa al compartir (WhatsApp, LinkedIn, X, etc.) -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="David Valenzuela" />
+    <meta property="og:title" content="Jesús David Valenzuela — Ingeniero de Software" />
+    <meta property="og:description" content="Desarrollo full stack, frontend y UX/UI. Proyectos, experiencia y CV." />
+    <meta property="og:url" content="https://davidvalenzuelaportafolio.vercel.app/" />
+    <meta property="og:image" content="https://davidvalenzuelaportafolio.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="David Valenzuela — Software Engineering, Full Stack y UX/UI" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="profile:first_name" content="Jesús David" />
+    <meta property="profile:last_name" content="Valenzuela Arredondo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jesús David Valenzuela — Ingeniero de Software" />
+    <meta name="twitter:description" content="Desarrollo full stack, frontend y UX/UI. Proyectos, experiencia y CV." />
+    <meta name="twitter:image" content="https://davidvalenzuelaportafolio.vercel.app/og.png" />
+
+    <!-- Datos estructurados: ayudan a Google a asociar el sitio con tu nombre -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Jesús David Valenzuela Arredondo",
+        "alternateName": "David Valenzuela",
+        "url": "https://davidvalenzuelaportafolio.vercel.app/",
+        "image": "https://davidvalenzuelaportafolio.vercel.app/og.png",
+        "jobTitle": "Software Engineering student, Full Stack Developer",
+        "email": "mailto:jesusdavidv2005@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Los Mochis",
+          "addressRegion": "Sinaloa",
+          "addressCountry": "MX"
+        },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Universidad Autónoma de Occidente" },
+        "award": "1.er lugar en Innovación Tecnológica, Encuentro Lince de Emprendimiento (UAdeO)",
+        "knowsAbout": ["React", "TypeScript", "Node.js", "FastAPI", "PostgreSQL", "Supabase", "Docker", "UX/UI"],
+        "knowsLanguage": ["es", "en"],
+        "sameAs": ["https://github.com/Davidvzlaa"]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,16 +67,27 @@
       rel="stylesheet"
     />
     <script>
-      // Aplica el tema antes de pintar para evitar parpadeo
+      // Aplica el tema antes de pintar para evitar parpadeo (oscuro por defecto)
       try {
-        var t = localStorage.getItem('theme')
-        if (t !== 'light') {
-          document.documentElement.classList.add('dark')
-        }
-      } catch (e) {}
+        if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark')
+      } catch (e) {
+        document.documentElement.classList.add('dark')
+      }
     </script>
+
+    <!-- Vercel Web Analytics (se activa en el panel de Vercel, pestaña Analytics) -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments) }
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
+    <noscript>
+      <p style="padding: 2rem; font-family: sans-serif">
+        Jesús David Valenzuela Arredondo, estudiante de Ingeniería de Software. Este sitio necesita JavaScript.
+        Contacto: jesusdavidv2005@gmail.com
+      </p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

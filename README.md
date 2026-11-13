@@ -13,12 +13,15 @@ npm run preview  # revisa el build final
 
 ## Cómo editar el contenido
 
-Todo el texto está en **`src/data/portfolio.ts`**: perfil, experiencia, proyectos, habilidades, educación y certificaciones. No hace falta tocar los componentes.
+Todo el texto está en **`src/data/portfolio.ts`**, en español (`es`) e inglés (`en`). Si cambias algo en un idioma, cámbialo también en el otro.
 
-- **CV descargable:** `public/cv-jesus-david-valenzuela.pdf`. Para actualizarlo, reemplaza ese archivo con el mismo nombre.
-- **Foto:** `public/david.webp`.
-- **Capturas de proyectos:** `public/proyectos/`. Agrega imágenes y ponlas en el arreglo `images` del proyecto.
-- **LinkedIn:** pon tu URL en `profile.socials.linkedin` y el ícono aparece solo.
+- **Proyectos:** los datos que no se traducen (imágenes, enlaces, tecnologías) van en `projectBase`; los textos y el caso de estudio (reto, papel, decisiones, resultados) van en `es.projects` y `en.projects`.
+- **Imágenes de proyectos:** guárdalas en `public/proyectos/` y agrega sus rutas al arreglo `images` del proyecto.
+- **CV:** `public/cv-jesus-david-valenzuela.pdf` (español) y `public/cv-jesus-david-valenzuela-en.pdf` (inglés). El botón descarga el del idioma activo.
+- **LinkedIn:** pon tu URL en `shared.socials.linkedin` y aparece en todo el sitio.
+- **Enlace directo a un proyecto:** `https://davidvalenzuelaportafolio.vercel.app/#proyecto-<id>` (por ejemplo `#proyecto-byarshop`).
+- **Idioma por enlace:** agrega `?lang=en` o `?lang=es` a la URL.
+- **Vista previa al compartir:** `public/og.png` (1200×630).
 
 ## Agregar más componentes de shadcn/ui
 
