@@ -11,14 +11,11 @@ import {
 import {
   ArrowRight,
   ArrowUpRight,
-  CalendarCheck,
   Check,
   ChevronLeft,
   ChevronRight,
   Code,
   Copy,
-  Cpu,
-  Database,
   Download,
   ExternalLink,
   FolderGit2,
@@ -29,17 +26,16 @@ import {
   Mail,
   MapPin,
   Menu,
-  Palette,
   Phone,
+  Star,
   Trophy,
-  User,
   Users,
   X,
 } from 'lucide-react'
 
 import { HeroBackground } from '@/components/hero-background'
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/icons'
-import { Section } from '@/components/section'
+import { Section, SectionHeading } from '@/components/section'
 import { TechLogo, techLogos } from '@/components/tech-logos'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
@@ -89,7 +85,7 @@ function IconTile({ children, className }: { children: ReactNode; className?: st
 
 function Logo() {
   return (
-    <a href="#inicio" className="flex items-center gap-2.5 font-display text-lg font-extrabold tracking-tight uppercase">
+    <a href="#inicio" className="flex items-center gap-2.5 font-display text-lg font-bold tracking-tight">
       <span className="grid size-9 place-items-center rounded-lg bg-brand text-sm text-brand-foreground">DV</span>
       <span>
         <span className="text-brand">David</span> Valenzuela
@@ -230,7 +226,7 @@ function CodeCard() {
     left -= tk.text.length
     if (!part) return null
     return (
-      <span key={i} className={tk.tone === 'kw' ? 'text-brand' : tk.tone === 'str' ? 'text-teal' : undefined}>
+      <span key={i} className={tk.tone === 'kw' ? 'font-semibold text-brand' : tk.tone === 'str' ? 'text-foreground/70' : undefined}>
         {part}
       </span>
     )
@@ -260,6 +256,12 @@ function Hero() {
   const { t } = useI18n()
   const links = useLinks()
   const role = useTypewriter(t.profile.roles)
+  const heroSocials = [
+    { href: shared.socials.github, label: 'GitHub', Icon: GithubIcon },
+    { href: shared.socials.linkedin, label: 'LinkedIn', Icon: LinkedinIcon },
+    { href: `mailto:${shared.email}`, label: t.ui.info.email, Icon: Mail },
+    { href: links.whatsapp(), label: 'WhatsApp', Icon: WhatsappIcon },
+  ].filter((s) => s.href)
 
   return (
     <section id="inicio" className="relative isolate overflow-hidden pt-28 sm:pt-32">
@@ -287,13 +289,13 @@ function Hero() {
           </h1>
 
           <p
-            className="rise mt-6 flex min-h-[1.75rem] items-center font-display text-base font-bold tracking-[0.12em] text-teal uppercase sm:text-lg sm:tracking-[0.2em]"
+            className="rise mt-6 flex min-h-[2rem] items-center font-display text-xl font-semibold text-foreground sm:text-2xl"
             style={delay(2)}
           >
             <span className="sr-only">{t.profile.roles.join(', ')}</span>
-            <span aria-hidden className="text-muted-foreground">&gt;&nbsp;</span>
+            <span aria-hidden className="text-brand">&gt;&nbsp;</span>
             <span aria-hidden>{role}</span>
-            <span aria-hidden className="caret" />
+            <span aria-hidden className="caret text-brand" />
           </p>
 
           <p className="rise mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl" style={delay(2)}>
@@ -313,16 +315,21 @@ function Hero() {
             </Button>
           </div>
 
-          <div className="rise mt-10" style={delay(4)}>
-            <p className="text-sm font-medium tracking-wide text-muted-foreground uppercase">{t.ui.techIWorkWith}</p>
-            <ul className="mt-4 flex flex-wrap gap-2.5">
-              {shared.heroStack.map((k) => (
-                <li
-                  key={k}
-                  title={techLogos[k].name}
-                  className="grid size-12 place-items-center rounded-xl border bg-card/70 transition-colors hover:border-brand/50"
-                >
-                  <TechLogo tech={k} className="size-6" />
+          <div className="rise mt-9 flex items-center gap-4" style={delay(4)}>
+            <p className="text-sm text-muted-foreground">{t.ui.findMe}</p>
+            <ul className="flex gap-2">
+              {heroSocials.map(({ href, label, Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target={href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    aria-label={label}
+                    title={label}
+                    className="grid size-11 place-items-center rounded-xl border bg-card/70 text-foreground/85 transition-colors hover:border-brand hover:text-brand"
+                  >
+                    <Icon className="size-5" />
+                  </a>
                 </li>
               ))}
             </ul>
@@ -330,30 +337,27 @@ function Hero() {
         </div>
 
         <figure className="rise relative mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none" style={delay(2)}>
-          <div className="relative mx-auto aspect-square w-full max-w-[34rem]">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[30rem] overflow-hidden rounded-[2rem] border bg-card">
             <div
               aria-hidden
-              className="absolute inset-[6%] rounded-full"
+              className="absolute inset-0"
               style={{
-                background: 'radial-gradient(circle at 50% 40%, color-mix(in oklab, var(--brand) 85%, white 0%), color-mix(in oklab, var(--brand) 35%, transparent) 70%)',
+                background:
+                  'radial-gradient(75% 55% at 50% 38%, color-mix(in oklab, var(--brand) 24%, transparent), transparent 75%)',
               }}
             />
-            <div aria-hidden className="absolute inset-[2%] rounded-full border border-teal/40" />
+            <div aria-hidden className="hero-dots absolute inset-0 opacity-[0.12]" />
             <img
               src={`${base}${shared.avatar}`}
               alt={shared.fullName}
               width={567}
               height={597}
               fetchPriority="high"
-              className="absolute bottom-0 left-1/2 w-[86%] -translate-x-1/2 object-contain [mask-image:linear-gradient(to_bottom,#000_85%,transparent)]"
+              className="absolute bottom-0 left-1/2 w-[92%] -translate-x-1/2 object-contain"
             />
           </div>
           <div className="absolute -bottom-4 left-0 hidden sm:block lg:-left-10">
             <CodeCard />
-          </div>
-          <div className="glow-box absolute top-[8%] right-0 rounded-2xl px-4 py-3 shadow-xl shadow-black/30 lg:-right-2">
-            <p className="font-display text-2xl font-black text-brand">9.7</p>
-            <p className="text-xs text-muted-foreground">{t.stats.gpa}</p>
           </div>
         </figure>
       </div>
@@ -361,83 +365,55 @@ function Hero() {
   )
 }
 
-/* ───────────────────────── Sobre mí ───────────────────────── */
-function About() {
+/* ───────────────────────── Perfil profesional ───────────────────────── */
+function Profile() {
   const { t } = useI18n()
   const links = useLinks()
-  const info = [
-    { icon: <User />, label: t.ui.info.name, value: shared.fullName },
-    { icon: <Mail />, label: t.ui.info.email, value: shared.email, href: `mailto:${shared.email}` },
-    { icon: <MapPin />, label: t.ui.info.location, value: t.profile.location },
-    { icon: <CalendarCheck />, label: t.ui.info.availability, value: t.profile.facts.available },
-    { icon: <GraduationCap />, label: t.ui.info.gpa, value: t.profile.facts.gpa },
-    { icon: <Languages />, label: t.ui.info.languages, value: t.languages.join(' · ') },
+  const c = t.ui.v2.profileCards
+  const cards = [
+    { icon: <GraduationCap />, ...c.education },
+    { icon: <Code />, ...c.specialty },
+    { icon: <MapPin />, ...c.location },
+    { icon: <Star />, ...c.interests },
   ]
 
   return (
-    <section id="sobre-mi" className="border-y bg-card/40 py-20 sm:py-24">
-      <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-6">
-          <p className="font-display text-sm font-bold tracking-[0.18em] text-brand uppercase">{t.ui.eyebrows.about}</p>
-          <h2 className="mt-3 font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] font-extrabold tracking-tight text-balance">
-            {t.ui.aboutHeading}
-          </h2>
-          <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
-            {t.profile.about.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+    <section id="sobre-mi" className="relative isolate overflow-hidden border-y border-border/60 bg-card/40 py-20 sm:py-24">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-0 right-0 -z-10 h-full w-1/2 opacity-60"
+        style={{ background: 'radial-gradient(60% 70% at 85% 30%, color-mix(in oklab, var(--brand) 14%, transparent), transparent 70%)' }}
+      />
+      <div className="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <SectionHeading eyebrow={t.ui.v2.profileEyebrow} title={t.ui.v2.profileTitle} />
+          <div className="mt-6 space-y-4 text-[1.05rem] leading-relaxed text-muted-foreground">
+            <p>{t.profile.about[0]}</p>
+            <p>{t.profile.about[1]}</p>
           </div>
-          <Button asChild variant="outline" size="lg" className="mt-8">
+          <Button asChild variant="outline" className="mt-8">
             <a href={links.cv} download>
               {t.ui.downloadCv} <Download />
             </a>
           </Button>
         </div>
 
-        <dl className="grid gap-px self-start overflow-hidden rounded-2xl border bg-border sm:grid-cols-2 lg:col-span-6">
-          {info.map((item) => (
-            <div key={item.label} className="flex items-start gap-4 bg-background p-5 sm:p-6">
-              <IconTile>{item.icon}</IconTile>
-              <div className="min-w-0">
-                <dt className="text-sm text-muted-foreground">{item.label}</dt>
-                <dd className="mt-0.5 font-medium break-words">
-                  {item.href ? (
-                    <a href={item.href} className="hover:text-brand">
-                      {item.value}
-                    </a>
-                  ) : (
-                    item.value
-                  )}
-                </dd>
+        <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          {cards.map((card) => (
+            <li
+              key={card.title}
+              className="flex items-start gap-4 rounded-2xl border bg-background/60 p-6 backdrop-blur transition-colors hover:border-brand/40"
+            >
+              <IconTile className="size-12 [&_svg]:size-6">{card.icon}</IconTile>
+              <div>
+                <h3 className="font-display text-lg font-bold">{card.title}</h3>
+                <p className="mt-1 text-muted-foreground">{card.text}</p>
               </div>
-            </div>
+            </li>
           ))}
-        </dl>
+        </ul>
       </div>
     </section>
-  )
-}
-
-/* ───────────────────────── Qué hago ───────────────────────── */
-const serviceIcons = { code: <Code />, design: <Palette />, database: <Database />, ai: <Cpu /> }
-
-function Services() {
-  const { t } = useI18n()
-  return (
-    <Section id="servicios" eyebrow={t.servicesEyebrow} title={t.servicesTitle}>
-      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {t.services.map((s) => (
-          <article
-            key={s.title}
-            className="group rounded-2xl border bg-card p-7 transition-colors hover:border-brand/50"
-          >
-            <IconTile className="size-12 [&_svg]:size-6">{serviceIcons[s.icon]}</IconTile>
-            <h3 className="mt-6 font-display text-xl font-bold">{s.title}</h3>
-            <p className="mt-3 leading-relaxed text-muted-foreground">{s.text}</p>
-          </article>
-        ))}
-      </div>
-    </Section>
   )
 }
 
@@ -447,7 +423,7 @@ const statIcons = { gpa: <GraduationCap />, projects: <FolderGit2 />, users: <Us
 function Stats() {
   const { t } = useI18n()
   return (
-    <section aria-label="Cifras" className="border-y bg-card/40">
+    <section aria-label="Cifras" className="border-y border-border/60 bg-card/40">
       <dl className="wrap grid grid-cols-2 lg:grid-cols-4">
         {shared.stats.map((s, i) => (
           <div
@@ -475,50 +451,39 @@ function Stats() {
 function ExperienceSection({ onOpen }: { onOpen: (id: string) => void }) {
   const { t } = useI18n()
   return (
-    <Section id="experiencia" eyebrow={t.ui.eyebrows.experience} title={t.ui.experienceTitle} intro={t.ui.experienceIntro}>
-      <ol className="relative space-y-6 before:absolute before:top-2 before:bottom-2 before:left-[0.6875rem] before:w-px before:bg-border lg:before:left-[calc(16.666%+0.6875rem)]">
-        {t.experience.map((job) => (
-          <li key={job.company} className="relative grid gap-3 pl-10 lg:grid-cols-6 lg:gap-8 lg:pl-0">
-            <p className="pt-5 text-sm font-medium text-muted-foreground lg:col-span-1 lg:text-right">{job.period}</p>
-            <span
-              aria-hidden
-              className="absolute top-6 left-0 grid size-6 place-items-center rounded-full border border-brand/40 bg-background lg:left-[calc(16.666%)]"
-            >
-              <span className="size-2 rounded-full bg-brand" />
-            </span>
-            <article className="rounded-2xl border bg-card p-6 sm:p-7 lg:col-span-5 lg:ml-10">
-              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                <h3 className="font-display text-2xl font-bold">{job.company}</h3>
-                <p className="font-medium text-teal">{job.role}</p>
-              </div>
-              <p className="mt-2 text-muted-foreground">{job.description}</p>
-              <ul className="mt-5 grid gap-3 lg:grid-cols-2">
-                {job.highlights.map((h) => (
-                  <li key={h} className="flex gap-3">
-                    <Check className="mt-1 size-4 shrink-0 text-brand" aria-hidden />
-                    <span>{h}</span>
+    <Section id="experiencia" eyebrow={t.ui.v2.experienceEyebrow} title={t.ui.v2.experienceTitle} intro={t.ui.experienceIntro}>
+      <ol className="grid gap-5 md:grid-cols-3">
+        {t.experience.map((job, i) => (
+          <li key={job.company} className="relative flex flex-col">
+            {/* Línea de tiempo horizontal en escritorio */}
+            <div aria-hidden className="mb-5 hidden items-center md:flex">
+              <span className="grid size-5 shrink-0 place-items-center rounded-full border border-brand/50 bg-background">
+                <span className="size-2 rounded-full bg-brand" />
+              </span>
+              {i < t.experience.length - 1 && <span className="ml-2 h-px flex-1 bg-gradient-to-r from-brand/50 to-border" />}
+            </div>
+            <article className="flex flex-1 flex-col rounded-2xl border bg-card p-6 transition-colors hover:border-brand/40">
+              <p className="text-sm text-muted-foreground">{job.period}</p>
+              <h3 className="mt-2 font-display text-xl font-bold">{job.company}</h3>
+              <p className="mt-0.5 text-sm font-medium text-brand">{job.role}</p>
+              <p className="mt-3 leading-relaxed text-muted-foreground">{job.description}</p>
+              <ul className="mt-5 flex flex-wrap gap-1.5" aria-label={t.ui.techTitle}>
+                {job.tech.slice(0, 4).map((tech) => (
+                  <li key={tech} className="rounded-md bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
+                    {tech}
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t pt-5">
-                <ul className="flex flex-wrap gap-2">
-                  {job.tech.map((tech) => (
-                    <li key={tech} className="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={`${HASH_PREFIX}${job.projectId}`}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    onOpen(job.projectId)
-                  }}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-                >
-                  {t.ui.viewCase} <ArrowRight className="size-4" />
-                </a>
-              </div>
+              <a
+                href={`${HASH_PREFIX}${job.projectId}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  onOpen(job.projectId)
+                }}
+                className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-brand hover:underline"
+              >
+                {t.ui.viewCase} <ArrowRight className="size-4" />
+              </a>
             </article>
           </li>
         ))}
@@ -560,7 +525,7 @@ function useProjectRoute() {
 function CaseBlock({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <h4 className="font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">{title}</h4>
+      <h4 className="text-sm font-semibold text-muted-foreground">{title}</h4>
       <div className="mt-3">{children}</div>
     </div>
   )
@@ -625,7 +590,7 @@ function ProjectModal({ project, onClose }: { project: Project | null; onClose: 
         <div className="max-h-[92vh] overflow-y-auto overscroll-contain">
           <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b bg-background/95 px-5 py-4 backdrop-blur sm:px-8">
             <div className="min-w-0">
-              <p className="text-sm text-teal">
+              <p className="text-sm text-muted-foreground">
                 {t.ui.categories[project.category]} | {project.subtitle}
               </p>
               <h3 id="modal-title" className="font-display text-2xl font-extrabold sm:text-3xl">
@@ -725,9 +690,9 @@ function ProjectModal({ project, onClose }: { project: Project | null; onClose: 
             <div className="space-y-5 lg:col-span-5">
               {cs && (
                 <div className="glow-box rounded-2xl p-5">
-                  <h4 className="font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">{t.ui.caseRole}</h4>
+                  <h4 className="text-sm font-semibold text-muted-foreground">{t.ui.caseRole}</h4>
                   <p className="mt-2">{cs.role}</p>
-                  <h4 className="mt-5 font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">
+                  <h4 className="mt-5 text-sm font-semibold text-muted-foreground">
                     {t.ui.caseResults}
                   </h4>
                   <ul className="mt-2 space-y-2">
@@ -741,7 +706,7 @@ function ProjectModal({ project, onClose }: { project: Project | null; onClose: 
                 </div>
               )}
               <div className="glow-box rounded-2xl p-5">
-                <h4 className="font-display text-sm font-bold tracking-[0.15em] text-teal uppercase">{t.ui.techTitle}</h4>
+                <h4 className="text-sm font-semibold text-muted-foreground">{t.ui.techTitle}</h4>
                 <TechList items={project.tech} className="mt-3" />
               </div>
               <ProjectLinks p={project} />
@@ -831,118 +796,125 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (id: string) => void }
     onOpen(p.id)
   }
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-all hover:-translate-y-1 hover:border-brand/50 hover:shadow-xl hover:shadow-black/20">
-      <a href={`${HASH_PREFIX}${p.id}`} onClick={openFromLink} className="block overflow-hidden" tabIndex={-1} aria-hidden>
+    <article className="group relative flex min-w-0 flex-col rounded-2xl border bg-card p-3 transition-all hover:-translate-y-1 hover:border-brand/50 hover:shadow-xl hover:shadow-black/30">
+      <div className="overflow-hidden rounded-xl border border-border/60">
         <Cover project={p} className="aspect-[16/10]" />
-      </a>
-      <div className="flex flex-1 flex-col p-6">
-        <p className="text-sm font-medium text-teal">{t.ui.categories[p.category]}</p>
-        <h3 className="mt-1 font-display text-xl font-bold">
-          <a href={`${HASH_PREFIX}${p.id}`} onClick={openFromLink} className="hover:text-brand">
-            {p.title}
-          </a>
-        </h3>
-        <p className="mt-1 text-sm text-muted-foreground">{p.subtitle}</p>
-        <p className="mt-3 line-clamp-3 text-[0.95rem] leading-relaxed text-muted-foreground">{p.summary}</p>
-        <p className="mt-4 text-sm text-brand/90">{p.tech.slice(0, 4).join(' / ')}</p>
-        <div className="mt-auto flex items-center justify-between gap-3 pt-6">
-          <a
-            href={`${HASH_PREFIX}${p.id}`}
-            onClick={openFromLink}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-brand"
-          >
-            {t.ui.viewDetails} <ArrowRight className="size-4" />
-          </a>
-          {(p.demo || p.prototype) && (
-            <Button asChild variant="outline" size="icon" className="size-9">
-              <a href={p.demo ?? p.prototype} target="_blank" rel="noreferrer" aria-label={`${t.ui.openSite}: ${p.title}`}>
-                <ExternalLink />
+      </div>
+      <div className="flex flex-1 flex-col px-2 pt-4 pb-2">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="font-display text-lg leading-snug font-bold">
+              <a
+                href={`${HASH_PREFIX}${p.id}`}
+                onClick={openFromLink}
+                className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none"
+              >
+                {p.title}
               </a>
-            </Button>
-          )}
+            </h3>
+            <p className="mt-0.5 truncate text-sm text-muted-foreground">{p.subtitle}</p>
+          </div>
+          <span
+            aria-hidden
+            className="grid size-9 shrink-0 place-items-center rounded-full border transition-colors group-hover:border-brand group-hover:bg-brand group-hover:text-brand-foreground"
+          >
+            <ArrowRight className="size-4" />
+          </span>
         </div>
+        <ul className="mt-auto flex flex-wrap gap-1.5 pt-4" aria-label={t.ui.techTitle}>
+          {p.tech.slice(0, 3).map((tech) => (
+            <li key={tech} className="rounded-md bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand">
+              {tech}
+            </li>
+          ))}
+        </ul>
       </div>
     </article>
   )
 }
 
+const VISIBLE_PROJECTS = 7
+
 function ProjectsSection({ onOpen }: { onOpen: (id: string) => void }) {
   const { t, projects } = useI18n()
-  const [filter, setFilter] = useState<'all' | ProjectCategory>('all')
-  const categories = Array.from(new Set(projects.map((p) => p.category)))
-  const visible = projects.filter((p) => filter === 'all' || p.category === filter)
+  const [expanded, setExpanded] = useState(false)
+  // Primero los proyectos con capturas; los que aún no tienen imagen van al final
+  const ordered = [...projects].sort((a, b) => Number(b.images.length > 0) - Number(a.images.length > 0))
+  const visible = expanded ? ordered : ordered.slice(0, VISIBLE_PROJECTS)
+  const hidden = projects.length - VISIBLE_PROJECTS
+
+  const toggle = (
+    <button
+      onClick={() => setExpanded((e) => !e)}
+      className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline"
+      aria-expanded={expanded}
+    >
+      {expanded ? t.ui.v2.viewLess : t.ui.v2.viewAll} <ArrowRight className="size-4" />
+    </button>
+  )
 
   return (
-    <Section
-      id="proyectos"
-      eyebrow={t.ui.eyebrows.projects}
-      title={t.ui.projectsHeading}
-      intro={t.ui.projectsIntro}
-      action={
-        <div className="flex flex-wrap gap-2" role="group" aria-label={t.ui.projectsTitle}>
-          {(['all', ...categories] as const).map((c) => (
-            <Button
-              key={c}
-              size="sm"
-              variant={filter === c ? 'brand' : 'outline'}
-              className="rounded-full"
-              aria-pressed={filter === c}
-              onClick={() => setFilter(c)}
-            >
-              {c === 'all' ? t.ui.all : t.ui.categories[c]}
-            </Button>
-          ))}
-        </div>
-      }
-    >
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <Section id="proyectos" eyebrow={t.ui.v2.projectsEyebrow} title={t.ui.v2.projectsTitle} action={toggle}>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {visible.map((p) => (
           <ProjectCard key={p.id} p={p} onOpen={onOpen} />
         ))}
+        {!expanded && hidden > 0 && (
+          <button
+            onClick={() => setExpanded(true)}
+            className="group relative flex min-h-64 flex-col justify-end overflow-hidden rounded-2xl border bg-card p-6 text-left transition-colors hover:border-brand/50"
+          >
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ background: 'radial-gradient(90% 70% at 70% 20%, color-mix(in oklab, var(--brand) 22%, transparent), transparent 70%)' }}
+            />
+            <IconTile className="relative mb-auto">
+              <FolderGit2 />
+            </IconTile>
+            <div className="relative flex items-end justify-between gap-3">
+              <div>
+                <p className="font-display text-lg font-bold">{t.ui.v2.moreTitle}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">{t.ui.v2.moreText(hidden)}</p>
+              </div>
+              <span
+                aria-hidden
+                className="grid size-9 shrink-0 place-items-center rounded-full border transition-colors group-hover:border-brand group-hover:bg-brand group-hover:text-brand-foreground"
+              >
+                <ArrowRight className="size-4" />
+              </span>
+            </div>
+          </button>
+        )}
       </div>
     </Section>
   )
 }
 
-/* ───────────────────────── Stack y formación ───────────────────────── */
+/* ───────────────────────── Stack ───────────────────────── */
+const STACK_ROW = ['react', 'typescript', 'javascript', 'nodejs', 'python', 'fastapi', 'postgresql', 'supabase', 'docker', 'tailwind', 'git', 'figma'] as const
+
 function SkillsSection() {
   const { t } = useI18n()
   return (
-    <Section id="habilidades" eyebrow={t.ui.eyebrows.stack} title={t.ui.stackHeading} intro={t.ui.skillsIntro}>
-      <div className="grid gap-5 lg:grid-cols-2">
-        {shared.skillGroups.map((g) => (
-          <div key={g.id} className="rounded-2xl border bg-card p-6 sm:p-7">
-            <h3 className="font-display text-lg font-bold">{t.skillGroups[g.id]}</h3>
-            <ul className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-4">
-              {g.techs.map((k) => (
-                <li
-                  key={k}
-                  className="flex flex-col items-center gap-2.5 rounded-xl border bg-background px-2 py-4 text-center transition-colors hover:border-brand/50"
-                >
-                  <TechLogo tech={k} className="size-8" />
-                  <span className="text-xs font-medium sm:text-sm">{techLogos[k].name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <section id="habilidades" className="py-20 sm:py-24">
+      <div className="wrap grid items-center gap-10 lg:grid-cols-12">
+        <SectionHeading className="lg:col-span-4" eyebrow={t.ui.v2.stackEyebrow} title={t.ui.v2.stackTitle} />
+        <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:col-span-8">
+          {STACK_ROW.map((k) => (
+            <li
+              key={k}
+              className="flex flex-col items-center gap-2.5 rounded-xl border bg-card px-2 py-4 text-center transition-colors hover:border-brand/50"
+            >
+              <TechLogo tech={k} className="size-8" />
+              <span className="text-xs font-semibold sm:text-sm">{techLogos[k].name}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="mt-14 grid gap-10 border-t pt-12 lg:grid-cols-12">
-        <div className="lg:col-span-4">
-          <h3 className="flex items-center gap-2 font-display text-lg font-bold">
-            <GraduationCap className="size-5 text-brand" /> {t.ui.education}
-          </h3>
-          {t.education.map((e) => (
-            <div key={e.degree} className="mt-4">
-              <p className="font-semibold">{e.degree}</p>
-              <p className="text-muted-foreground">{e.school}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{e.period}</p>
-              <p className="mt-2 text-sm">{e.detail}</p>
-            </div>
-          ))}
-        </div>
-        <div className="lg:col-span-4">
+      <div className="wrap mt-14 grid gap-10 border-t border-border/60 pt-12 md:grid-cols-2">
+        <div>
           <h3 className="flex items-center gap-2 font-display text-lg font-bold">
             <Trophy className="size-5 text-brand" /> {t.ui.certifications}
           </h3>
@@ -961,7 +933,7 @@ function SkillsSection() {
             </li>
           </ul>
         </div>
-        <div className="lg:col-span-4">
+        <div>
           <h3 className="flex items-center gap-2 font-display text-lg font-bold">
             <Users className="size-5 text-brand" /> {t.ui.howIWork}
           </h3>
@@ -972,9 +944,50 @@ function SkillsSection() {
               </li>
             ))}
           </ul>
+          <h3 className="mt-8 flex items-center gap-2 font-display text-lg font-bold">
+            <Languages className="size-5 text-brand" /> {t.ui.languages}
+          </h3>
+          <p className="mt-3 text-muted-foreground">{t.languages.join(' · ')}</p>
         </div>
       </div>
-    </Section>
+    </section>
+  )
+}
+
+/* ───────────────────────── Banda de contacto ───────────────────────── */
+function CtaBanner() {
+  const { t } = useI18n()
+  const links = useLinks()
+  return (
+    <div className="wrap pb-20 sm:pb-24">
+      <div className="relative isolate overflow-hidden rounded-3xl border border-brand/30 bg-card px-6 py-10 sm:px-12 sm:py-12">
+        <div
+          aria-hidden
+          className="absolute top-1/2 -left-[22rem] -z-10 size-[34rem] -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              'radial-gradient(circle at 70% 50%, color-mix(in oklab, var(--brand) 40%, transparent), color-mix(in oklab, var(--brand) 8%, transparent) 60%, transparent 72%)',
+            boxShadow: 'inset -2px 0 0 color-mix(in oklab, var(--brand) 55%, transparent)',
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{ background: 'radial-gradient(40% 120% at 0% 50%, color-mix(in oklab, var(--brand) 18%, transparent), transparent 70%)' }}
+        />
+        <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:pl-[min(14vw,12rem)]">
+          <div>
+            <h2 className="font-display text-2xl font-extrabold sm:text-3xl">{t.ui.v2.ctaTitle}</h2>
+            <p className="mt-2 text-muted-foreground">{t.ui.v2.ctaText}</p>
+          </div>
+          <Button asChild variant="brand" size="lg" className="h-12 shrink-0 px-6 text-base">
+            <a href={links.whatsapp()} target="_blank" rel="noreferrer">
+              {t.ui.contactCta} <ArrowRight />
+            </a>
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -1095,13 +1108,10 @@ function ContactSection() {
   ]
 
   return (
-    <section id="contacto" className="border-t py-20 sm:py-24">
+    <section id="contacto" className="border-y border-border/60 bg-card/40 py-20 sm:py-28">
       <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="min-w-0 lg:col-span-5">
-          <p className="font-display text-sm font-bold tracking-[0.18em] text-brand uppercase">{t.ui.eyebrows.contact}</p>
-          <h2 className="mt-3 font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] font-extrabold tracking-tight text-balance">
-            {t.ui.contactHeading}
-          </h2>
+<SectionHeading eyebrow={t.ui.v2.contactEyebrow} title={t.ui.v2.contactTitle} />
           <p className="mt-4 max-w-md text-lg text-muted-foreground">{t.ui.contactIntro}</p>
 
           <ul className="mt-8 space-y-5">
@@ -1152,59 +1162,45 @@ function Footer() {
   ].filter((s) => s.href)
 
   return (
-    <footer className="border-t bg-band text-band-foreground">
-      <div className="wrap grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <Logo />
-          <p className="mt-4 max-w-sm text-band-foreground/65">{t.ui.footerTagline}</p>
-          <p className="mt-4 inline-flex items-center gap-2 text-sm text-teal">
-            <span className="size-2 rounded-full bg-teal" aria-hidden /> {t.profile.availability}
-          </p>
-        </div>
-        <div className="lg:col-span-2">
-          <h3 className="font-display text-sm font-bold tracking-[0.15em] uppercase">{t.ui.quickLinks}</h3>
-          <ul className="mt-4 space-y-2.5 text-band-foreground/65">
-            {nav.map((n) => (
-              <li key={n.href}>
-                <a href={n.href} className="hover:text-brand">
-                  {n.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="lg:col-span-2">
-          <h3 className="font-display text-sm font-bold tracking-[0.15em] uppercase">{t.ui.followMe}</h3>
-          <ul className="mt-4 flex gap-2">
-            {socials.map(({ href, label, Icon }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={label}
-                  className="grid size-10 place-items-center rounded-lg border border-band-foreground/15 transition-colors hover:border-brand hover:text-brand"
-                >
-                  <Icon className="size-4" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="lg:col-span-3">
-          <h3 className="font-display text-sm font-bold tracking-[0.15em] uppercase">{t.ui.resume}</h3>
-          <Button asChild variant="brand" className="mt-4">
-            <a href={links.cv} download>
-              {t.ui.downloadCv} <Download />
+    <footer className="border-t border-border/60 bg-band text-band-foreground">
+      <div className="wrap flex flex-col gap-6 py-10 lg:flex-row lg:items-center lg:justify-between">
+        <Logo />
+        <p className="text-sm text-band-foreground/60">{t.ui.v2.footerLine}</p>
+        <nav aria-label="Pie" className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-band-foreground/70">
+          {nav.map((n) => (
+            <a key={n.href} href={n.href} className="hover:text-brand">
+              {n.label}
             </a>
-          </Button>
-        </div>
+          ))}
+        </nav>
+        <ul className="flex gap-2">
+          {socials.map(({ href, label, Icon }) => (
+            <li key={label}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
+                className="grid size-9 place-items-center rounded-lg border border-band-foreground/15 transition-colors hover:border-brand hover:text-brand"
+              >
+                <Icon className="size-4" />
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div className="wrap flex flex-col gap-2 border-t border-band-foreground/10 py-6 text-sm text-band-foreground/50 sm:flex-row sm:justify-between">
+      <div className="wrap flex items-center justify-between gap-4 border-t border-band-foreground/10 py-5 text-sm text-band-foreground/50">
         <p>
-          © {new Date().getFullYear()} {shared.fullName}
+          © {new Date().getFullYear()} {shared.fullName}. {t.ui.v2.rights}
         </p>
-        <p>{t.ui.madeWith}</p>
+        <a
+          href="#inicio"
+          aria-label={t.ui.v2.backToTop}
+          title={t.ui.v2.backToTop}
+          className="grid size-10 place-items-center rounded-full border border-band-foreground/20 text-band-foreground/80 transition-colors hover:border-brand hover:text-brand"
+        >
+          <ArrowRight className="size-4 -rotate-90" />
+        </a>
       </div>
     </footer>
   )
@@ -1226,12 +1222,12 @@ export default function App() {
       <Header />
       <main>
         <Hero />
-        <About />
-        <Services />
         <Stats />
-        <ExperienceSection onOpen={open} />
+        <Profile />
         <ProjectsSection onOpen={open} />
+        <ExperienceSection onOpen={open} />
         <SkillsSection />
+        <CtaBanner />
         <ContactSection />
       </main>
       <Footer />

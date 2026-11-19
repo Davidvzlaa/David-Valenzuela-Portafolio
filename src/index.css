@@ -40,29 +40,29 @@
 
 /* Modo oscuro: el estilo del portafolio en PDF (negro, azul y verde azulado) */
 .dark {
-  --background: #04060a;
-  --foreground: #f1f4f9;
-  --card: #0b0f17;
-  --card-foreground: #f1f4f9;
-  --popover: #0b0f17;
-  --popover-foreground: #f1f4f9;
-  --primary: #f1f4f9;
-  --primary-foreground: #04060a;
-  --secondary: #121826;
-  --secondary-foreground: #f1f4f9;
-  --muted: #121826;
-  --muted-foreground: #8e9ab0;
-  --accent: #121826;
-  --accent-foreground: #f1f4f9;
+  --background: #060e1c;
+  --foreground: #eef3fb;
+  --card: #0b1729;
+  --card-foreground: #eef3fb;
+  --popover: #0b1729;
+  --popover-foreground: #eef3fb;
+  --primary: #eef3fb;
+  --primary-foreground: #060e1c;
+  --secondary: #12223a;
+  --secondary-foreground: #eef3fb;
+  --muted: #12223a;
+  --muted-foreground: #95a5bf;
+  --accent: #12223a;
+  --accent-foreground: #eef3fb;
   --destructive: #f97066;
-  --border: #1b2333;
-  --input: #1b2333;
-  --ring: #2b8ef0;
-  --brand: #2b8ef0;
-  --brand-foreground: #04060a;
-  --teal: #1fc2ad;
-  --band: #080c14;
-  --band-foreground: #f1f4f9;
+  --border: #1b2d4a;
+  --input: #1b2d4a;
+  --ring: #3b8cf5;
+  --brand: #3b8cf5;
+  --brand-foreground: #ffffff;
+  --teal: #34d399;
+  --band: #050b16;
+  --band-foreground: #eef3fb;
 }
 
 @theme inline {
@@ -137,7 +137,7 @@
   border: 1px solid transparent;
   background:
     linear-gradient(var(--card), var(--card)) padding-box,
-    linear-gradient(120deg, var(--teal), var(--brand) 60%, color-mix(in oklab, var(--brand) 20%, transparent)) border-box;
+    linear-gradient(150deg, color-mix(in oklab, var(--brand) 45%, var(--border)), var(--border) 45%) border-box;
 }
 
 /* Fondo interactivo del inicio */
