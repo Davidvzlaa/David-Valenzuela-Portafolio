@@ -140,6 +140,46 @@
     linear-gradient(120deg, var(--teal), var(--brand) 60%, color-mix(in oklab, var(--brand) 20%, transparent)) border-box;
 }
 
+/* Fondo interactivo del inicio */
+.hero-bg {
+  --mx: 72%;
+  --my: 38%;
+  --spot: 0.55;
+}
+.hero-dots {
+  background-image: radial-gradient(color-mix(in oklab, var(--foreground) 55%, transparent) 1px, transparent 1.3px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 75% 75% at 70% 40%, #000 30%, transparent);
+}
+.hero-dots-lit {
+  background-image: radial-gradient(var(--brand) 1.4px, transparent 1.8px);
+  mask-image: radial-gradient(240px circle at var(--mx) var(--my), #000, transparent 75%);
+  opacity: var(--spot);
+  transition: opacity 0.4s ease;
+}
+.hero-halo {
+  background: radial-gradient(460px circle at var(--mx) var(--my), color-mix(in oklab, var(--brand) 16%, transparent), transparent 70%);
+  opacity: var(--spot);
+  transition: opacity 0.4s ease;
+}
+
+/* Cursor de texto parpadeante */
+.caret {
+  display: inline-block;
+  width: 0.09em;
+  height: 1.05em;
+  margin-left: 0.08em;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; }
+}
+
 /* Modal de proyecto */
 dialog.project-modal::backdrop {
   background: rgb(0 0 0 / 0.75);

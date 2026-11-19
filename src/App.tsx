@@ -37,6 +37,7 @@ import {
   X,
 } from 'lucide-react'
 
+import { HeroBackground } from '@/components/hero-background'
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/icons'
 import { Section } from '@/components/section'
 import { TechLogo, techLogos } from '@/components/tech-logos'
@@ -44,6 +45,7 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { shared, type Project, type ProjectCategory } from '@/data/portfolio'
 import { useI18n } from '@/lib/i18n'
+import { useTypedCount, useTypewriter } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 
 const base = import.meta.env.BASE_URL
@@ -196,27 +198,59 @@ function Header() {
 }
 
 /* ───────────────────────── Inicio ───────────────────────── */
+type Token = { text: string; tone?: 'kw' | 'str' }
+
 function CodeCard() {
   const { lang } = useI18n()
-  const k = lang === 'es'
-    ? { role: 'rol', stack: 'stack', location: 'ubicacion', available: 'disponible', loc: 'Los Mochis, MX', from: 'Enero 2027' }
-    : { role: 'role', stack: 'stack', location: 'location', available: 'available', loc: 'Los Mochis, MX', from: 'January 2027' }
+  const es = lang === 'es'
+  const tokens: Token[] = [
+    { text: 'const', tone: 'kw' },
+    { text: ' david = {\n  ' + (es ? 'rol' : 'role') + ': ' },
+    { text: "'Full Stack Developer'", tone: 'str' },
+    { text: ',\n  stack: [' },
+    { text: "'React'", tone: 'str' },
+    { text: ', ' },
+    { text: "'TypeScript'", tone: 'str' },
+    { text: ',\n    ' },
+    { text: "'Node.js'", tone: 'str' },
+    { text: ', ' },
+    { text: "'FastAPI'", tone: 'str' },
+    { text: '],\n  ' + (es ? 'ubicacion' : 'location') + ': ' },
+    { text: "'Los Mochis, MX'", tone: 'str' },
+    { text: ',\n  ' + (es ? 'disponible' : 'available') + ': ' },
+    { text: es ? "'Enero 2027'" : "'January 2027'", tone: 'str' },
+    { text: ',\n}' },
+  ]
+  const total = tokens.reduce((n, tk) => n + tk.text.length, 0)
+  const typed = useTypedCount(total, { stepMs: 22, startDelay: 900 })
+
+  let left = typed
+  const visible = tokens.map((tk, i) => {
+    const part = tk.text.slice(0, Math.max(0, left))
+    left -= tk.text.length
+    if (!part) return null
+    return (
+      <span key={i} className={tk.tone === 'kw' ? 'text-brand' : tk.tone === 'str' ? 'text-teal' : undefined}>
+        {part}
+      </span>
+    )
+  })
+
   return (
-    <div className="glow-box w-[min(100%,20rem)] rounded-2xl text-left font-mono text-[0.8rem] leading-relaxed shadow-2xl shadow-black/40">
+    <div className="glow-box w-80 max-w-[calc(100vw-3rem)] rounded-2xl text-left font-mono text-[0.8rem] leading-relaxed shadow-2xl shadow-black/40">
       <div className="flex items-center justify-between border-b px-4 py-2.5 text-xs text-muted-foreground">
         <span>&lt;/&gt; david.ts</span>
-        <span className="size-2 rounded-full bg-teal" aria-hidden />
+        <span className="flex gap-1.5" aria-hidden>
+          <span className="size-2 rounded-full bg-foreground/20" />
+          <span className="size-2 rounded-full bg-foreground/20" />
+          <span className="size-2 rounded-full bg-teal" />
+        </span>
       </div>
-      <pre className="overflow-hidden px-4 py-3 whitespace-pre-wrap">
-        <span className="text-brand">const</span> david = {'{'}
-        {'\n  '}
-        {k.role}: <span className="text-teal">'Full Stack Developer'</span>,{'\n  '}
-        {k.stack}: [<span className="text-teal">'React'</span>, <span className="text-teal">'TypeScript'</span>,
-        {'\n    '}
-        <span className="text-teal">'Node.js'</span>, <span className="text-teal">'FastAPI'</span>],{'\n  '}
-        {k.location}: <span className="text-teal">'{k.loc}'</span>,{'\n  '}
-        {k.available}: <span className="text-teal">'{k.from}'</span>,{'\n'}
-        {'}'}
+      {/* Texto completo para lectores de pantalla; la versión animada es decorativa */}
+      <pre className="sr-only">{tokens.map((tk) => tk.text).join('')}</pre>
+      <pre aria-hidden className="min-h-[9.6rem] overflow-hidden px-4 py-3 whitespace-pre-wrap">
+        {visible}
+        <span className="caret text-brand" />
       </pre>
     </div>
   )
@@ -225,22 +259,11 @@ function CodeCard() {
 function Hero() {
   const { t } = useI18n()
   const links = useLinks()
+  const role = useTypewriter(t.profile.roles)
 
   return (
-    <section id="inicio" className="relative overflow-hidden pt-28 sm:pt-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 right-0 -z-10 h-[720px] w-[75%] opacity-40 blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, color-mix(in oklab, var(--brand) 45%, transparent), transparent)' }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_60%_60%_at_70%_40%,#000,transparent)]"
-        style={{
-          backgroundImage: 'radial-gradient(color-mix(in oklab, var(--foreground) 35%, transparent) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
-        }}
-      />
+    <section id="inicio" className="relative isolate overflow-hidden pt-28 sm:pt-32">
+      <HeroBackground />
 
       <div className="wrap grid items-center gap-14 pb-16 lg:grid-cols-12 lg:gap-10 lg:pb-24">
         <div className="lg:col-span-7">
@@ -264,10 +287,13 @@ function Hero() {
           </h1>
 
           <p
-            className="rise mt-6 font-display text-sm font-bold tracking-[0.2em] text-teal uppercase sm:text-base sm:tracking-[0.35em]"
+            className="rise mt-6 flex min-h-[1.75rem] items-center font-display text-base font-bold tracking-[0.12em] text-teal uppercase sm:text-lg sm:tracking-[0.2em]"
             style={delay(2)}
           >
-            Full Stack Developer &nbsp;|&nbsp; UX/UI
+            <span className="sr-only">{t.profile.roles.join(', ')}</span>
+            <span aria-hidden className="text-muted-foreground">&gt;&nbsp;</span>
+            <span aria-hidden>{role}</span>
+            <span aria-hidden className="caret" />
           </p>
 
           <p className="rise mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl" style={delay(2)}>

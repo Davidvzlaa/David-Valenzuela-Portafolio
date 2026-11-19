@@ -261,6 +261,8 @@ const es = {
     } as Record<ProjectCategory, string>,
   },
   profile: {
+    /** Roles que se escriben y borran en el inicio */
+    roles: ['Full Stack Developer', 'Diseñador UX/UI', 'Desarrollador Frontend', 'Creador de soluciones IoT'],
     tagline: 'Frontend Development | UX/UI | Soluciones Tecnológicas',
     location: 'Los Mochis, Sinaloa, México',
     availability: 'Disponible para estancia profesional desde enero de 2027',
@@ -632,6 +634,7 @@ const en: Content = {
     },
   },
   profile: {
+    roles: ['Full Stack Developer', 'UX/UI Designer', 'Frontend Developer', 'IoT Builder'],
     tagline: 'Frontend Development | UX/UI | Technology Solutions',
     location: 'Los Mochis, Sinaloa, Mexico',
     availability: 'Available for a professional internship from January 2027',
