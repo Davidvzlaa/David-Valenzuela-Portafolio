@@ -3,13 +3,14 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 /** Título que puede llevar su última parte resaltada en azul: ['Texto normal', 'texto en azul.'] */
-export type Title = string | readonly [string, string]
+export type Title = string | readonly string[]
 
 export function TitleText({ title }: { title: Title }) {
   if (typeof title === 'string') return <>{title}</>
+  const [main, highlight] = title
   return (
     <>
-      {title[0]} <span className="text-brand">{title[1]}</span>
+      {main} {highlight && <span className="text-brand">{highlight}</span>}
     </>
   )
 }
